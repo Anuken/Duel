@@ -103,6 +103,18 @@ public enum EffectType{
 			Draw.color();
 		}
 	},
+	rinwave{
+		{lifetime=20;}
+		
+		public void draw(Effect e){
+			Draw.color(Hue.mix(Color.WHITE, Color.ORANGE, e.life/lifetime));
+			Draw.thickness(3f - e.life/lifetime);
+			Draw.circle(e.x, e.y, 40f - e.life*2f);
+			Draw.thickness(1f);
+			
+			Draw.color();
+		}
+	},
 	redwave{
 		{lifetime=20;}
 		
@@ -127,11 +139,35 @@ public enum EffectType{
 			Draw.color();
 		}
 	},
+	rinspike{
+		{lifetime=20;}
+		
+		public void draw(Effect e){
+			Draw.color(Hue.mix(Color.ORANGE, Color.WHITE, e.life/lifetime));
+			Draw.thickness(3f - e.life/lifetime);
+			Draw.circle(e.x, e.y, 40f - e.life*2f);
+			Draw.thickness(1f);
+			
+			Draw.color();
+		}
+	},
 	lspike{
 		{lifetime=33;}
 		
 		public void draw(Effect e){
 			Draw.color(Hue.mix(Color.ROYAL, Color.WHITE, e.life/lifetime));
+			Draw.thickness(5f - e.life/lifetime);
+			Draw.circle(e.x, e.y, 60f - e.life*2f);
+			Draw.thickness(1f);
+			
+			Draw.color();
+		}
+	},
+	rlspike{
+		{lifetime=33;}
+		
+		public void draw(Effect e){
+			Draw.color(Hue.mix(Color.ORANGE, Color.WHITE, e.life/lifetime));
 			Draw.thickness(5f - e.life/lifetime);
 			Draw.circle(e.x, e.y, 60f - e.life*2f);
 			Draw.thickness(1f);

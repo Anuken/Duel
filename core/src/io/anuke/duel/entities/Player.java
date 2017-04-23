@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Vector2;
 import io.anuke.duel.Duel;
 import io.anuke.duel.entities.effect.Bullet;
 import io.anuke.duel.entities.effect.BulletType;
-import io.anuke.duel.entities.effect.Projectile;
 import io.anuke.ucore.core.Draw;
 import io.anuke.ucore.core.UInput;
 import io.anuke.ucore.entities.Entity;
@@ -17,7 +16,7 @@ public class Player extends Entity implements Collidable, Damageable{
 	float bounds = 100;
 	float speed = 7;
 	float dashspeed = 20;
-	int health = 100;
+	int health = Duel.health;
 	
 	public void update(){
 		
@@ -98,11 +97,12 @@ public class Player extends Entity implements Collidable, Damageable{
 
 	@Override
 	public boolean collides(Entity other){
-		return other instanceof Projectile;
+		return other instanceof Bullet;
 	}
 
 	@Override
 	public void collision(Entity other){
+		health -= ((Bullet)other).damage();
 	}
 
 	@Override
@@ -114,5 +114,10 @@ public class Player extends Entity implements Collidable, Damageable{
 	public void damage(int amount){
 		health -= amount;
 		
+	}
+
+	@Override
+	public int health(){
+		return health;
 	}
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import io.anuke.duel.Duel;
 import io.anuke.duel.effects.EffectType;
 import io.anuke.duel.effects.Effects;
+import io.anuke.duel.entities.Player;
 import io.anuke.ucore.core.Draw;
 import io.anuke.ucore.entities.Entity;
 import io.anuke.ucore.util.Mathf;
@@ -52,7 +53,29 @@ public enum BulletType{
 			Effects.effect(EffectType.spikes, b.x, b.y);
 			Effects.shake(5f, 5f);
 		}
-	}, 
+	},
+	rblast(2f, 20){
+		{
+			hitsize=20;
+			lifetime = 300;
+		}
+		
+		void draw(Bullet b){
+			b.velocity.scl(1.05f);
+			
+			Draw.thickness(3f);
+			Draw.color(Color.ORANGE);
+			Draw.circle(b.x, b.y, 10);
+			Draw.thickness(1f);
+			
+			Draw.color();
+		}
+		
+		void destroy(Bullet b){
+			Effects.effect(EffectType.spikes, b.x, b.y);
+			Effects.shake(5f, 5f);
+		}
+	},
 	particle(5f, 4){
 		void destroy(Bullet b){
 			Effects.effect(EffectType.particle, b.x, b.y);
@@ -138,6 +161,8 @@ public enum BulletType{
 			Effects.effect(EffectType.particle, b.x, b.y);
 		}
 	};
+	Bullet b;
+	float x, y;
 	
 	int damage;
 	float speed;
@@ -149,6 +174,16 @@ public enum BulletType{
 	private BulletType(float speed, int damage){
 		this.damage = damage;
 		this.speed = speed;
+	}
+	
+	Color color(){
+		return b.owner instanceof Player ? Color.ROYAL : Color.ORANGE;
+	}
+	
+	void set(Bullet b){
+		this.b = b;
+		this.x = b.x;
+		this.y = b.y;
 	}
 	
 	void draw(Bullet b){

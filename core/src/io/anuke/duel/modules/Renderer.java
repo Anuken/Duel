@@ -98,11 +98,11 @@ public class Renderer extends RendererModule<Duel>{
 		
 		recorder.update();
 		
-		font.getData().setScale(2f);
+		font.getData().setScale(1f);
 		batch.begin();
 		font.draw(batch, Gdx.graphics.getFramesPerSecond() + "", 0, Gdx.graphics.getHeight());
 		batch.end();
-		font.getData().setScale(1f);
+		font.getData().setScale(0.5f);
 	}
 	
 	void clampBounds(Entity entity){

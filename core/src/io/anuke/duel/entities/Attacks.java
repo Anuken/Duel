@@ -31,6 +31,17 @@ public enum Attacks{
 			});
 		}
 	},
+	rcannon{
+		void impl(){
+			Effects.effect(EffectType.rinwave, other.x, other.y);
+			
+			Effects.effect(EffectType.rinspike, x, y);
+			
+			Timers.run(20, ()->{
+				shoot(BulletType.rblast, enemyAngle());
+			});
+		}
+	},
 	shadow{
 		void impl(){
 			Effects.effect(EffectType.inwave, other.x, other.y);
@@ -116,7 +127,8 @@ public enum Attacks{
 		void impl(){
 			for(int i = 0; i < 3; i ++){
 				vector.setToRandomDirection().setLength(70);
-				Effects.effect(EffectType.lspike, vector.x+x, vector.y+y);
+				
+				Effects.effect(entity instanceof Player ? EffectType.lspike : EffectType.rlspike, vector.x+x, vector.y+y);
 				new Laser(entity,vector.x+x, vector.y+y, other.x, other.y).add();
 			}
 		}

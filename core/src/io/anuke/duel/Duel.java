@@ -10,6 +10,7 @@ import io.anuke.ucore.entities.Entity;
 import io.anuke.ucore.modules.ModuleController;
 
 public class Duel extends ModuleController<Duel>{
+	public static final int health = 10000;
 	
 	@Override
 	public void init(){
