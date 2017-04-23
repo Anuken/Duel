@@ -32,7 +32,7 @@ public enum BulletType{
 			Effects.effect(EffectType.spark, b);
 		}
 	}, 
-	blast(2f, 20){
+	blast(2f, 60){
 		{
 			hitsize=20;
 			lifetime = 300;
@@ -54,7 +54,7 @@ public enum BulletType{
 			Effects.shake(5f, 5f);
 		}
 	},
-	particle(5f, 4){
+	particle(5f, 7){
 		void destroy(){
 			Effects.effect(EffectType.particle, b);
 		}

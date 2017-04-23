@@ -6,17 +6,14 @@ import com.badlogic.gdx.math.Vector2;
 import io.anuke.duel.Duel;
 import io.anuke.duel.entities.effect.Bullet;
 import io.anuke.duel.entities.effect.BulletType;
-import io.anuke.ucore.core.Draw;
 import io.anuke.ucore.core.UInput;
-import io.anuke.ucore.entities.Entity;
 import io.anuke.ucore.util.Angles;
 
-public class Player extends Entity implements Collidable, Damageable{
+public class Player extends Fighter implements Collidable, Damageable{
 	private Vector2 vector = new Vector2();
 	float bounds = 100;
 	float speed = 7;
 	float dashspeed = 20;
-	int health = Duel.health;
 	
 	public void update(){
 		
@@ -66,6 +63,8 @@ public class Player extends Entity implements Collidable, Damageable{
 		x += vector.x*delta();
 		y += vector.y*delta();
 		
+		time += vector.x < 0 ? delta()*4 : vector.x > 0 ? -delta()*4 : 0;
+		
 		//x = Mathf.clamp(x, -bounds, bounds);
 		//y = Mathf.clamp(y, -bounds, bounds);
 		
@@ -73,10 +72,6 @@ public class Player extends Entity implements Collidable, Damageable{
 			new Bullet(this, BulletType.test, Angles.mouseAngle(x, y)).add();
 		}
 		
-	}
-	
-	void attack(Attacks attack){
-		attack.use(this);
 	}
 	
 	Enemy enemy(){
@@ -89,35 +84,5 @@ public class Player extends Entity implements Collidable, Damageable{
 	
 	void shoot(BulletType type, float angle){
 		new Bullet(this, type, angle).add();
-	}
-	
-	public void draw(){
-		Draw.rect("player", x, y);
-	}
-
-	@Override
-	public boolean collides(Entity other){
-		return other instanceof Bullet;
-	}
-
-	@Override
-	public void collision(Entity other){
-		health -= ((Bullet)other).damage();
-	}
-
-	@Override
-	public float hitboxSize(){
-		return 8;
-	}
-
-	@Override
-	public void damage(int amount){
-		health -= amount;
-		
-	}
-
-	@Override
-	public int health(){
-		return health;
 	}
 }

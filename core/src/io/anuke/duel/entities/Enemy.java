@@ -4,13 +4,11 @@ import com.badlogic.gdx.math.Vector2;
 
 import io.anuke.duel.Duel;
 import io.anuke.duel.entities.effect.Laser;
-import io.anuke.duel.entities.effect.Projectile;
+import io.anuke.duel.modules.Control;
 import io.anuke.duel.modules.Renderer;
-import io.anuke.ucore.core.Draw;
-import io.anuke.ucore.entities.Entity;
 import io.anuke.ucore.util.Timers;
 
-public class Enemy extends Entity implements Collidable, Damageable{
+public class Enemy extends Fighter{
 	Player player;
 	Vector2 vector = new Vector2(0.5f, 0.5f);
 	int health = Duel.health;
@@ -19,6 +17,7 @@ public class Enemy extends Entity implements Collidable, Damageable{
 	boolean flip = false;
 	float angle = 90;
 	float standtime = 0;
+	float time;
 	
 	void combat(){
 		if(rand(0.04)){
@@ -26,6 +25,14 @@ public class Enemy extends Entity implements Collidable, Damageable{
 		}
 		
 		if(rand(0.01)){
+			attack(Attacks.tricannon);
+		}
+		
+		if(rand(0.02) && Duel.module(Control.class).getNear(x, y, 100) > 80){
+			attack(Attacks.reverseshield);
+		}
+		
+		if(rand(0.003)){
 			attack(Attacks.portal);
 		}
 		
@@ -41,10 +48,6 @@ public class Enemy extends Entity implements Collidable, Damageable{
 	
 	void laser(){
 		new Laser(this, x, y, player.x, player.y).add();
-	}
-	
-	void attack(Attacks attack){
-		attack.use(this);
 	}
 	
 	@Override
@@ -72,6 +75,8 @@ public class Enemy extends Entity implements Collidable, Damageable{
 			standtime -= delta();
 		}
 		
+		time += vector.x < 0 ? delta()*4 : vector.x > 0 ? -delta()*4 : 0;
+		
 		combat();
 	}
 	
@@ -82,35 +87,5 @@ public class Enemy extends Entity implements Collidable, Damageable{
 	@Override
 	public void added(){
 		player = Duel.module(Renderer.class).player;
-	}
-	
-	@Override
-	public void draw(){
-		Draw.rect("enemy", x, y);
-	}
-
-	@Override
-	public boolean collides(Entity other){
-		return other instanceof Projectile;
-	}
-
-	@Override
-	public void collision(Entity other){
-		health -= ((Projectile)other).damage();
-	}
-
-	@Override
-	public float hitboxSize(){
-		return 10;
-	}
-
-	@Override
-	public void damage(int amount){
-		health -= amount;
-	}
-
-	@Override
-	public int health(){
-		return health;
 	}
 }

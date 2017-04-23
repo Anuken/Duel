@@ -74,6 +74,13 @@ public class Control extends Module<Duel>{
 		}
 	}
 	
+	public int getNear(float x, float y, float size){
+		Rectangle.tmp.setSize(size);
+		Rectangle.tmp.setCenter(x, y);
+		out.clear();
+		tree.getMaybeIntersecting(out, Rectangle.tmp);
+		return out.size;
+	}
 	
 	public boolean checkCollide(Entity entity, Entity other){
 		Collidable a = (Collidable) entity;
