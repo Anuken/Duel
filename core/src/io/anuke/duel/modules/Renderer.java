@@ -53,7 +53,7 @@ public class Renderer extends RendererModule<Duel>{
 		
 		camera.position.set(0, 0, 0);
 		if(shaketime > 0){
-			float shakeintensity = this.shakeintensity*getModule(UI.class).getPrefs().getInteger("screenshake", 3);
+			float shakeintensity = this.shakeintensity*getModule(UI.class).getPrefs().getInteger("screenshake", 4)/4f;
 			camera.position.add(Mathf.random(-shakeintensity, shakeintensity), Mathf.random(-shakeintensity, shakeintensity), 0);
 			shaketime -= delta();
 			this.shakeintensity -= 0.1f;
@@ -110,7 +110,8 @@ public class Renderer extends RendererModule<Duel>{
 	}
 	
 	void clampBounds(Entity entity){
-		float minx = -gwidth()/2, maxx = gwidth()/2, miny = -gheight()/2, maxy = gheight()/2;
+		float marginx = 50;
+		float minx = -gwidth()/2 + marginx, maxx = gwidth()/2 - marginx, miny = -gheight()/2, maxy = gheight()/2;
 		
 		if(entity instanceof Damageable){
 			entity.x = Mathf.clamp(entity.x, minx, maxx);

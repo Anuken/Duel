@@ -32,12 +32,12 @@ public class Control extends Module<Duel>{
 			"left", Keys.LEFT, 
 			"right", Keys.RIGHT,
 			"dash", Keys.SHIFT_LEFT,
-			"dodge", Keys.SPACE,
+			"dodge", Keys.SHIFT_LEFT,
 			"weapon1", Keys.A,
 			"weapon2", Keys.S,
 			"weapon3", Keys.D,
-			"weapon4", Keys.SHIFT_LEFT,
-			"weapon5", Keys.SPACE
+			"weapon4", Keys.SPACE,
+			"weapon5", Keys.F
 		);
 		
 		tree = new QuadTree<Collidable>(3, new Rectangle(-Gdx.graphics.getWidth()/2, -Gdx.graphics.getHeight()/2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));

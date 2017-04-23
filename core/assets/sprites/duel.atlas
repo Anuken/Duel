@@ -4,206 +4,304 @@ size: 256,128
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+acannon
+  rotate: false
+  xy: 60, 2
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+alaserballs
+  rotate: false
+  xy: 70, 2
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+alock
+  rotate: false
+  xy: 80, 2
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+amark
+  rotate: false
+  xy: 90, 2
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+amegaportal
+  rotate: false
+  xy: 100, 2
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+aportal
+  rotate: false
+  xy: 110, 2
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+areverseshield
+  rotate: false
+  xy: 124, 86
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+ashadow
+  rotate: false
+  xy: 122, 76
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+ashot
+  rotate: false
+  xy: 134, 86
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+asplit
+  rotate: false
+  xy: 132, 76
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+aswarm
+  rotate: false
+  xy: 122, 66
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+atricannon
+  rotate: false
+  xy: 132, 66
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+atrilaser
+  rotate: false
+  xy: 121, 56
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
 background
   rotate: false
-  xy: 2, 22
+  xy: 2, 26
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
 blaser
   rotate: false
-  xy: 138, 92
+  xy: 138, 96
   size: 1, 12
   orig: 1, 12
   offset: 0, 0
   index: -1
 blaserend
   rotate: false
-  xy: 2, 2
+  xy: 2, 6
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 dirt
   rotate: false
-  xy: 124, 92
+  xy: 124, 96
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: -1
 elaser
   rotate: false
-  xy: 118, 52
+  xy: 141, 96
   size: 1, 12
   orig: 1, 12
   offset: 0, 0
   index: -1
 elaserend
   rotate: false
-  xy: 104, 104
+  xy: 104, 108
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 enemy
   rotate: false
-  xy: 124, 106
+  xy: 124, 110
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 laser
   rotate: false
-  xy: 138, 78
+  xy: 118, 56
   size: 1, 12
   orig: 1, 12
   offset: 0, 0
   index: -1
 laserend
   rotate: false
-  xy: 22, 2
+  xy: 22, 6
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 lockbullet
   rotate: false
-  xy: 142, 110
+  xy: 142, 114
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: -1
 mark
   rotate: false
-  xy: 42, 4
+  xy: 42, 8
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 particle1
   rotate: false
-  xy: 60, 8
+  xy: 60, 12
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: -1
 particle2
   rotate: false
-  xy: 104, 52
+  xy: 104, 56
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: -1
 particle3
   rotate: false
-  xy: 156, 110
+  xy: 156, 114
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: -1
 particle4
   rotate: false
-  xy: 74, 8
+  xy: 74, 12
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: -1
 particle5
   rotate: false
-  xy: 104, 38
+  xy: 104, 42
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: -1
 particlebullet
   rotate: false
-  xy: 170, 110
+  xy: 170, 114
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: -1
 split3bullet
   rotate: false
-  xy: 170, 110
+  xy: 170, 114
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: -1
 player
   rotate: false
-  xy: 104, 66
+  xy: 104, 70
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 shadowbullet
   rotate: false
-  xy: 88, 8
+  xy: 88, 12
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: -1
 slaser
   rotate: false
-  xy: 118, 38
+  xy: 118, 42
   size: 1, 12
   orig: 1, 12
   offset: 0, 0
   index: -1
 slaserend
   rotate: false
-  xy: 104, 84
+  xy: 104, 88
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 spark1
   rotate: false
-  xy: 104, 24
+  xy: 104, 28
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: -1
 spark2
   rotate: false
-  xy: 184, 110
+  xy: 184, 114
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: -1
 spark3
   rotate: false
-  xy: 198, 110
+  xy: 198, 114
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: -1
 spark4
   rotate: false
-  xy: 212, 110
+  xy: 212, 114
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: -1
 spark5
   rotate: false
-  xy: 226, 110
+  xy: 226, 114
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: -1
 swarmbullet
   rotate: false
-  xy: 240, 110
+  xy: 240, 114
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: -1
 testbullet
   rotate: false
-  xy: 124, 78
+  xy: 102, 12
   size: 12, 12
   orig: 12, 12
+  offset: 0, 0
+  index: -1
+white
+  rotate: false
+  xy: 121, 46
+  size: 8, 8
+  orig: 8, 8
   offset: 0, 0
   index: -1

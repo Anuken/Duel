@@ -4,36 +4,57 @@ import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.math.Vector2;
 
 import io.anuke.duel.Duel;
+import io.anuke.duel.effects.EffectType;
+import io.anuke.duel.effects.Effects;
 import io.anuke.duel.entities.effect.Bullet;
 import io.anuke.duel.entities.effect.BulletType;
+import io.anuke.ucore.core.Draw;
 import io.anuke.ucore.core.UInput;
 import io.anuke.ucore.util.Angles;
+import io.anuke.ucore.util.Mathf;
+import io.anuke.ucore.util.Timers;
 
 public class Player extends Fighter implements Collidable, Damageable{
 	private Vector2 vector = new Vector2();
-	float bounds = 100;
-	float dashspeed = 20;
+	float maxdashspeed = 30;
+	float dashspeed = 30;
+	float drag = 0.4f;
+	public AttackInfo[] attacks = new AttackInfo[4];
+	public int maxmana = 500;
+	public int regen = 3;
+	
+	public Player(){
+		speed = 9f;
+		
+		for(int i = 0; i < 4; i ++)
+			attacks[i] = new AttackInfo(Attacks.tricannon);
+		
+		attacks[1] = new AttackInfo(Attacks.lock);
+		attacks[2] = new AttackInfo(Attacks.mark);
+		attacks[3] = new AttackInfo(Attacks.portal);
+	}
 	
 	public void update(){
 		
-		if(UInput.keyUp("weapon1")){
-			attack(Attacks.balls);
-		}
-		
-		if(UInput.keyUp("weapon2")){
-			attack(Attacks.shot);
-		}
-		
-		if(UInput.keyUp("weapon3")){
-			attack(Attacks.shadow);
-		}
-		
-		if(UInput.keyUp("weapon4")){
-			attack(Attacks.lock);
-		}
-		
-		if(UInput.keyUp("weapon5")){
-			attack(Attacks.trilaser);
+		for(int i = 0; i < 4; i ++){
+			int index = i;
+			Attacks attack = attacks[i].attack;
+			if(UInput.keyUp("weapon"+(i+1)) && attacks[i].cooldown <= 0){
+				attack(attacks[i].attack);
+				attacks[i].cooldown = attacks[i].attack.cooldown;
+			}
+			
+			if(attacks[i].cooldown <= delta() && attacks[i].cooldown > 0){
+				Effects.overlay(100, f->{
+					Draw.tcolor(1, 1, 1, 1f-f/100f);
+					Draw.tscl(0.5f);
+					//Draw.text(attack.name(), -80+index*40,-Gdx.graphics.getHeight()/2+50);
+					Draw.tcolor();
+					Draw.tscl(1f);
+				});
+			}
+			
+			attacks[i].cooldown -= delta();
 		}
 		
 		vector.set(0, 0);
@@ -56,8 +77,16 @@ public class Player extends Fighter implements Collidable, Damageable{
 		
 		vector.limit(speed);
 		
-		if(UInput.keyUp("dash"))
+		if(UInput.keyDown("dash")){
+			if(Timers.get(4) && dashspeed > 10)
+				Effects.effect(EffectType.portalwave, this);
 			vector.setLength(dashspeed);
+			dashspeed -= drag;
+		}else{
+			dashspeed += delta();
+		}
+		
+		dashspeed = Mathf.clamp(dashspeed, speed, maxdashspeed);
 		
 		x += vector.x*delta();
 		y += vector.y*delta();
@@ -71,6 +100,16 @@ public class Player extends Fighter implements Collidable, Damageable{
 			new Bullet(this, BulletType.test, Angles.mouseAngle(x, y)).add();
 		}
 		
+	}
+	
+	public class AttackInfo{
+		public int charges;
+		public Attacks attack;
+		public float cooldown;
+		
+		public AttackInfo(Attacks attack){
+			this.attack = attack;
+		}
 	}
 	
 	Enemy enemy(){

@@ -8,13 +8,13 @@ import io.anuke.ucore.core.Draw;
 import io.anuke.ucore.entities.Entity;
 import io.anuke.ucore.util.Mathf;
 
-public class Portal extends TimedEntity{
+public class MegaPortal extends TimedEntity{
 	float warmup = EffectType.portalwave.lifetime;
 	Entity owner;
 
-	public Portal(Entity owner) {
+	public MegaPortal(Entity owner) {
 		this.owner = owner;
-		lifetime = 200;
+		lifetime = 300;
 	}
 
 	@Override
@@ -25,10 +25,10 @@ public class Portal extends TimedEntity{
 		if(life > lifetime-f)
 			Draw.alpha(1f-(life-(lifetime-f))/f);
 		
-		Draw.thickness(4);
-		Draw.spike(x, y, 20 - (life - warmup) / 2.5f, 70 - (life - warmup) / 2.5f, 10, (id % 2 - 0.5f) * life * 2f);
-		Draw.spike(x, y, 30, 60, 10, -(id % 2 - 0.5f) * life * 2f);
-		Draw.circle(x, y, 20);
+		Draw.thickness(5);
+		Draw.spike(x, y, 40 - (life - warmup) / 2.5f, 60 - (life - warmup) / 2.5f, 10, (id % 2 - 0.5f) * life * 2f);
+		Draw.spike(x, y, 50, 60, 10, -(id % 2 - 0.5f) * life * 2f);
+		Draw.circle(x, y, 40);
 		Draw.thickness(1f);
 		Draw.color();
 	}
@@ -40,9 +40,9 @@ public class Portal extends TimedEntity{
 		super.update();
 
 		if(life > warmup && Math.random() < 0.5*delta()){
-			float i = 2;
-			float r = 14f;
-			new Bullet(owner, BulletType.particle, Duel.angleTo(this, Duel.other(owner)) + Mathf.random(-i, i)).set(x + Mathf.random(-r, r), y + Mathf.random(-r, r)).add();
+			float i = 3;
+			float r = 30f;
+			new Bullet(owner, BulletType.blast, Duel.angleTo(this, Duel.other(owner)) + Mathf.random(-i, i)).set(x + Mathf.random(-r, r), y + Mathf.random(-r, r)).add();
 			Effects.shake(3f, 2f);
 		}
 	}

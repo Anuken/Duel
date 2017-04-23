@@ -27,10 +27,48 @@ public class Enemy extends Fighter{
 			attack(Attacks.tricannon);
 		}
 		
+		if(rand(0.01)){
+			attack(Attacks.mark);
+		}
+		
+		if(rand(0.001)){
+			attack(Attacks.laserballs);
+		}
+		
+		if(rand(0.001)){
+			attack(Attacks.split);
+		}
+		
 		if(rand(0.002)){
 			for(int i = 0; i < 3; i ++){
 				Timers.run(i*8, ()->{
 					attack(Attacks.balls);
+				});
+			}
+		}
+		
+		if(rand(0.002)){
+			for(int i = 0; i < 5; i ++){
+				Timers.run(i*10, ()->{
+					attack(Attacks.split);
+				});
+			}
+		}
+		
+		if(rand(0.001)){
+			for(int i = 0; i < 5; i ++){
+				Timers.run(i*15, ()->{
+					attack(Attacks.lock);
+					attack(Attacks.swarm);
+				});
+			}
+			standtime = 70;
+		}
+		
+		if(rand(0.002)){
+			for(int i = 0; i < 7; i ++){
+				Timers.run(i*10, ()->{
+					attack(Attacks.tricannon);
 				});
 			}
 		}

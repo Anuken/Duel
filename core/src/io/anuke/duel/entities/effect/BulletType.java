@@ -13,13 +13,13 @@ import io.anuke.ucore.util.Mathf;
 
 public enum BulletType{
 	test(1f, 5),
-	swarm(4f, 5){
+	swarm(6f, 5){
 		{lifetime = 300;}
 		void draw(){
 			super.draw();
 			
 			Entity target = b.target();
-			vector.set(target.x - b.x, target.y - b.y).setLength(0.2f);
+			vector.set(target.x - b.x, target.y - b.y).setLength(0.3f);
 			b.velocity.add(vector);
 			b.velocity.limit(speed);
 			
@@ -29,7 +29,7 @@ public enum BulletType{
 		}
 		
 		void destroy(){
-			Effects.effect(EffectType.spark, b);
+			Effects.effect(EffectType.particle, b);
 		}
 	}, 
 	blast(2f, 60){
@@ -54,7 +54,7 @@ public enum BulletType{
 			Effects.shake(5f, 5f);
 		}
 	},
-	particle(5f, 7){
+	particle(7f, 12){
 		void destroy(){
 			Effects.effect(EffectType.particle, b);
 		}
@@ -77,12 +77,13 @@ public enum BulletType{
 			Draw.color(color());
 			Draw.thickness(3);
 			Draw.circle(b.x, b.y, 10);
+			Draw.spike(x, y, 10, 20, 3, 90);
 			Draw.thickness(1f);
 			Draw.color();
 		}
 	},
 	ball(5f, 30){
-		{lifetime = 60;}
+		{lifetime = 100;}
 		void destroy(){
 			int shots = 3;
 			
@@ -102,20 +103,30 @@ public enum BulletType{
 			Draw.color();
 		}
 	},
-	split3(3f, 3){
+	laserball(3f, 3){
 		{lifetime = 60;}
 		
 		void destroy(){
-			Effects.effect(EffectType.orangespark, b);
+			Effects.effect(EffectType.rinwave, b);
+			new Laser(b.owner, x, y, Duel.other(b.owner).x, Duel.other(b.owner).y).add();
+		}
+		
+		void draw(){
+			Draw.color(color());
+			Draw.thickness(5);
+			Draw.circle(b.x, b.y, 15);
+			Draw.thickness(1f);
+			Draw.color();
 		}
 	},
 	lock(3f, 10){
+		{lifetime=300;}
 		void draw(){
 			super.draw();
 			
 			if(b.life > 30 && b.life < 34){
 				Effects.effect(EffectType.swave, b);
-				b.velocity.setLength(7f);
+				b.velocity.setLength(11f);
 				b.velocity.setAngle(Duel.angleTo(b, Duel.other(b.owner)));
 			}
 		}

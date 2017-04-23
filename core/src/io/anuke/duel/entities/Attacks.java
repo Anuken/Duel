@@ -12,7 +12,7 @@ import io.anuke.ucore.util.Mathf;
 import io.anuke.ucore.util.Timers;
 
 public enum Attacks{
-	swarm{
+	swarm(100, "Shoots a swarm of seeking bullets."){
 		void impl(){
 			for(int i = 0; i < 15; i ++)
 				shoot(BulletType.swarm, Mathf.random(360f));
@@ -20,7 +20,7 @@ public enum Attacks{
 			Effects.effect(EffectType.rspark, entity);
 		}
 	}, 
-	cannon{
+	cannon(10, "Shoots a powerful fast-moving bullet."){
 		void impl(){
 			
 			Effects.effect(EffectType.inspike, entity);
@@ -30,7 +30,18 @@ public enum Attacks{
 			});
 		}
 	},
-	shadow{
+	mark(100, "Shoots multiple fast-moving bullets in sequence."){
+		void impl(){
+			
+			Effects.effect(EffectType.inspike, entity);
+			
+			Timers.run(20, ()->{
+				for(int i = 0; i < 50; i ++)
+				shoot(BulletType.blast, Mathf.random(360));
+			});
+		}
+	},
+	shadow(100, "Shoots a swarm of dividing, seeking bullets."){
 		void impl(){
 			Effects.effect(EffectType.inwave, entity, other.x, other.y);
 			
@@ -43,7 +54,7 @@ public enum Attacks{
 			
 		}
 	},
-	tricannon{
+	tricannon(30, "Shoots three powerful fast-moving bullets."){
 		void impl(){
 			
 			Effects.effect(EffectType.inspike, entity);
@@ -54,7 +65,7 @@ public enum Attacks{
 			});
 		}
 	},
-	shot{
+	shot(100, "Shoots a swarm of various seeking bullets."){
 		void impl(){
 			
 			for(int i = 0; i < 7; i ++)
@@ -66,7 +77,7 @@ public enum Attacks{
 			Effects.effect(EffectType.rspark, entity);
 		}
 	},
-	lock{
+	lock(100, "Shoots a circle of seeking bullets."){
 		void impl(){
 			int shots = 20;
 			
@@ -76,7 +87,7 @@ public enum Attacks{
 			}
 		}
 	},
-	portal{
+	portal(100, "Opens a portal that targets the enemy."){
 		void impl(){
 			vector.setToRandomDirection().setLength(30);
 			
@@ -86,17 +97,27 @@ public enum Attacks{
 			}
 		}
 	}, 
-	split{
+	megaportal(100, "Opens a large portal that targets the enemy."){
 		void impl(){
-			int shots = 6;
+			new MegaPortal(entity).set(x+vector.x, y+vector.y).add();
+		}
+	},
+	laserportal(100, "Opens a laser portal that targets the enemy."){
+		void impl(){
+			new LaserPortal(entity).set(x+vector.x, y+vector.y).add();
+		}
+	}, 
+	split(100, "Shoots 3 bullets that each shoot 3 lasers."){
+		void impl(){
+			int shots = 3;
 			
 			for(int i = 0; i < shots; i ++){
-				float angle = 360f/shots*i+45;
-				shoot(BulletType.split1, angle);
+				float angle = 360f/shots*i;
+				shoot(BulletType.split1, angle+90);
 			}
 		}
 	}, 
-	balls{
+	balls(100, "acannon", "Shoots slow-moving projectiles in a circle."){
 		void impl(){
 			int shots = 30;
 			
@@ -106,7 +127,17 @@ public enum Attacks{
 			}
 		}
 	}, 
-	reverseshield{
+	laserballs(100, "Shoots laser-firing projectiles in a circle."){
+		void impl(){
+			int shots = 5;
+			
+			for(int i = 0; i < shots; i ++){
+				float angle = 360f/shots*i;
+				shoot(BulletType.laserball, angle);
+			}
+		}
+	}, 
+	reverseshield(100, "Takes control of all nearby bullets and makes them target the enemy."){
 		void impl(){
 			
 			Effects.effect(EffectType.shield, entity);
@@ -120,7 +151,7 @@ public enum Attacks{
 			}
 		}
 	}, 
-	trilaser{
+	trilaser(100, "Shoots three lasers in sequence."){
 		void impl(){
 			for(int i = 0; i < 3; i ++){
 				vector.setToRandomDirection().setLength(70);
@@ -130,10 +161,27 @@ public enum Attacks{
 			}
 		}
 	};
+	static Vector2 vector = new Vector2();
+	
 	Entity entity, other;
 	float x, y;
 	
-	static Vector2 vector = new Vector2();
+	public float cooldown;
+	public String desc, icon;
+	
+	
+	private Attacks(float cooldown, String icon, String desc){
+		this.cooldown = cooldown;
+		this.desc = desc;
+		this.icon = icon;
+	}
+	
+	private Attacks(float cooldown, String desc){
+		this.cooldown = cooldown;
+		this.desc = desc;
+		this.icon = "a"+name();
+	}
+	
 	
 	void use(Entity entity){
 		this.entity = entity;
