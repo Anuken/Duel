@@ -64,7 +64,7 @@ public class Renderer extends RendererModule<Duel>{
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		
-		drawBackground();
+		//drawBackground();
 		
 		for(Entity e : EntityHandler.instance().getEntities()){
 			e.draw();

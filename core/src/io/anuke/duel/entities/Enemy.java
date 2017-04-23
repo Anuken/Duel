@@ -22,7 +22,11 @@ public class Enemy extends Entity implements Collidable, Damageable{
 	
 	void combat(){
 		if(rand(0.04)){
-			attack(Attacks.rcannon);
+			attack(Attacks.cannon);
+		}
+		
+		if(rand(0.01)){
+			attack(Attacks.portal);
 		}
 		
 		if(rand(0.002)){

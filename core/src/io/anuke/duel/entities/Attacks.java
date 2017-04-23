@@ -17,36 +17,24 @@ public enum Attacks{
 			for(int i = 0; i < 15; i ++)
 				shoot(BulletType.swarm, Mathf.random(360f));
 			
-			Effects.effect(EffectType.rspark, x, y);
+			Effects.effect(EffectType.rspark, entity);
 		}
 	}, 
 	cannon{
 		void impl(){
-			Effects.effect(EffectType.inwave, other.x, other.y);
 			
-			Effects.effect(EffectType.inspike, x, y);
+			Effects.effect(EffectType.inspike, entity);
 			
 			Timers.run(20, ()->{
 				shoot(BulletType.blast, enemyAngle());
 			});
 		}
 	},
-	rcannon{
-		void impl(){
-			Effects.effect(EffectType.rinwave, other.x, other.y);
-			
-			Effects.effect(EffectType.rinspike, x, y);
-			
-			Timers.run(20, ()->{
-				shoot(BulletType.rblast, enemyAngle());
-			});
-		}
-	},
 	shadow{
 		void impl(){
-			Effects.effect(EffectType.inwave, other.x, other.y);
+			Effects.effect(EffectType.inwave, entity, other.x, other.y);
 			
-			Effects.effect(EffectType.inspike, x, y);
+			Effects.effect(EffectType.inspike, entity);
 			
 			for(int i = 0; i < 15; i ++){
 				Bullet bullet = new Bullet(entity, BulletType.shadow, Mathf.random(360)).set(entity.x, entity.y).add();
@@ -57,9 +45,8 @@ public enum Attacks{
 	},
 	tricannon{
 		void impl(){
-			Effects.effect(EffectType.inwave, other.x, other.y);
 			
-			Effects.effect(EffectType.inspike, x, y);
+			Effects.effect(EffectType.inspike, entity);
 			
 			for(int i = 0; i < 7; i ++)
 			Timers.run(15+i*2, ()->{
@@ -76,7 +63,7 @@ public enum Attacks{
 				shoot(Math.random() < 0.5 ? BulletType.lock : BulletType.swarm, 180+enemyAngle()+Mathf.random(-20, 20));
 			});
 			
-			Effects.effect(EffectType.rspark, x, y);
+			Effects.effect(EffectType.rspark, entity);
 		}
 	},
 	lock{
@@ -112,13 +99,13 @@ public enum Attacks{
 	reverseshield{
 		void impl(){
 			
-			Effects.effect(EffectType.shield, x, y);
+			Effects.effect(EffectType.shield, entity);
 			
 			for(Entity entity : EntityHandler.instance().getEntities()){
 				if(entity instanceof Bullet && Vector2.dst(x, y, entity.x, entity.y) < 100){
 					((Bullet)entity).velocity.setAngle(Duel.angleTo(entity, other));
 					((Bullet)entity).owner = this.entity;
-					Effects.effect(EffectType.redwave, entity.x, entity.y);
+					Effects.effect(EffectType.redwave, entity);
 				}
 			}
 		}
@@ -128,7 +115,7 @@ public enum Attacks{
 			for(int i = 0; i < 3; i ++){
 				vector.setToRandomDirection().setLength(70);
 				
-				Effects.effect(entity instanceof Player ? EffectType.lspike : EffectType.rlspike, vector.x+x, vector.y+y);
+				Effects.effect(entity instanceof Player ? EffectType.lspike : EffectType.rlspike, entity, vector.x+x, vector.y+y);
 				new Laser(entity,vector.x+x, vector.y+y, other.x, other.y).add();
 			}
 		}

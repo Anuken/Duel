@@ -82,16 +82,16 @@ public class Laser extends Projectile{
 			if(not){
 				Effects.shake(5, 5f);
 				if(owner instanceof Player)
-					Effects.effect(EffectType.sspikes, x, y);
+					Effects.effect(EffectType.sspikes, this);
 				else
-					Effects.effect(EffectType.ospikes, x, y);
+					Effects.effect(EffectType.ospikes, this);
 			}
 			
 			Entity target = Duel.other(owner);
 			
 			if(Util.intersects(target, x, y, targetx, targety)){
 				((Damageable)target).damage(5);
-				Effects.effect(EffectType.particle, target.x, target.y);
+				Effects.effect(EffectType.particle, owner, target.x, target.y);
 			}
 		}
 		
@@ -113,11 +113,14 @@ public class Laser extends Projectile{
 			
 			Draw.alpha(Mathf.clamp((1f-(Mathf.clamp((time-charge)/(life-charge))))*2f));
 			if(owner instanceof Enemy){
-				Draw.laser("laser", "laserend", x, y, targetx, targety);
+				Draw.color(Duel.ecolor);
 			}else{
-				Draw.laser("blaser", "blaserend", x, y, targetx, targety);
+				Draw.color(Duel.pcolor);
 			}
+			
+			Draw.laser("laser", "laserend", x, y, targetx, targety);
 			Draw.color();
+			Draw.laser("elaser", "elaserend", x, y, targetx, targety);
 		}
 	}
 

@@ -15,8 +15,8 @@ public enum BulletType{
 	test(1f, 5),
 	swarm(4f, 5){
 		{lifetime = 300;}
-		void draw(Bullet b){
-			super.draw(b);
+		void draw(){
+			super.draw();
 			
 			Entity target = b.target();
 			vector.set(target.x - b.x, target.y - b.y).setLength(0.2f);
@@ -28,8 +28,8 @@ public enum BulletType{
 			}
 		}
 		
-		void destroy(Bullet b){
-			Effects.effect(EffectType.spark, b.x, b.y);
+		void destroy(){
+			Effects.effect(EffectType.spark, b);
 		}
 	}, 
 	blast(2f, 20){
@@ -38,52 +38,30 @@ public enum BulletType{
 			lifetime = 300;
 		}
 		
-		void draw(Bullet b){
+		void draw(){
 			b.velocity.scl(1.05f);
 			
 			Draw.thickness(3f);
-			Draw.color(new Color(0x75ffafff));
+			Draw.color(color());
 			Draw.circle(b.x, b.y, 10);
 			Draw.thickness(1f);
 			
 			Draw.color();
 		}
 		
-		void destroy(Bullet b){
-			Effects.effect(EffectType.spikes, b.x, b.y);
-			Effects.shake(5f, 5f);
-		}
-	},
-	rblast(2f, 20){
-		{
-			hitsize=20;
-			lifetime = 300;
-		}
-		
-		void draw(Bullet b){
-			b.velocity.scl(1.05f);
-			
-			Draw.thickness(3f);
-			Draw.color(Color.ORANGE);
-			Draw.circle(b.x, b.y, 10);
-			Draw.thickness(1f);
-			
-			Draw.color();
-		}
-		
-		void destroy(Bullet b){
-			Effects.effect(EffectType.spikes, b.x, b.y);
+		void destroy(){
+			Effects.effect(EffectType.spikes, b);
 			Effects.shake(5f, 5f);
 		}
 	},
 	particle(5f, 4){
-		void destroy(Bullet b){
-			Effects.effect(EffectType.particle, b.x, b.y);
+		void destroy(){
+			Effects.effect(EffectType.particle, b);
 		}
 	},
 	split1(4f, 4){
 		{lifetime = 50;}
-		void destroy(Bullet b){
+		void destroy(){
 			int shots = 4;
 			
 			for(int i = 0; i < shots; i ++){
@@ -92,8 +70,8 @@ public enum BulletType{
 			}
 		}
 		
-		void draw(Bullet b){
-			Draw.color(Color.ORANGE);
+		void draw(){
+			Draw.color(color());
 			Draw.thickness(3);
 			Draw.circle(b.x, b.y, 10);
 			Draw.thickness(1f);
@@ -102,7 +80,7 @@ public enum BulletType{
 	},
 	split2(3f, 2){
 		{lifetime = 60;}
-		void destroy(Bullet b){
+		void destroy(){
 			int shots = 3;
 			
 			for(int i = 0; i < shots; i ++){
@@ -111,8 +89,8 @@ public enum BulletType{
 			}
 		}
 		
-		void draw(Bullet b){
-			Draw.color(Color.ORANGE);
+		void draw(){
+			Draw.color(color());
 			Draw.circle(b.x, b.y, 8);
 			Draw.color();
 		}
@@ -120,30 +98,30 @@ public enum BulletType{
 	split3(3f, 3){
 		{lifetime = 60;}
 		
-		void destroy(Bullet b){
-			Effects.effect(EffectType.orangespark, b.x, b.y);
+		void destroy(){
+			Effects.effect(EffectType.orangespark, b);
 		}
 	},
 	lock(3f, 10){
-		void draw(Bullet b){
-			super.draw(b);
+		void draw(){
+			super.draw();
 			
 			if(b.life > 30 && b.life < 34){
-				Effects.effect(EffectType.swave, b.x, b.y);
+				Effects.effect(EffectType.swave, b);
 				b.velocity.setLength(7f);
 				b.velocity.setAngle(Duel.angleTo(b, Duel.other(b.owner)));
 			}
 		}
 		
-		void destroy(Bullet b){
-			Effects.effect(EffectType.smspikes, b.x, b.y);
+		void destroy(){
+			Effects.effect(EffectType.smspikes, b);
 			Effects.shake(5f, 5f);
 		}
 	},
 	shadow(4f, 6){
 		{lifetime=300;}
-		void draw(Bullet b){
-			super.draw(b);
+		void draw(){
+			super.draw();
 			
 			if(b.life > 30 && b.life < 34){
 				if(Math.random() < 0.2)
@@ -157,8 +135,8 @@ public enum BulletType{
 			
 		}
 		
-		void destroy(Bullet b){
-			Effects.effect(EffectType.particle, b.x, b.y);
+		void destroy(){
+			Effects.effect(EffectType.particle, b);
 		}
 	};
 	Bullet b;
@@ -177,7 +155,7 @@ public enum BulletType{
 	}
 	
 	Color color(){
-		return b.owner instanceof Player ? Color.ROYAL : Color.ORANGE;
+		return b.owner instanceof Player ? Duel.pcolor : Duel.ecolor;
 	}
 	
 	void set(Bullet b){
@@ -186,9 +164,13 @@ public enum BulletType{
 		this.y = b.y;
 	}
 	
-	void draw(Bullet b){
+	void draw(){
+		Draw.color(color());
 		Draw.rect(name()+"bullet", b.x, b.y, b.velocity.angle());
+		Draw.color();
 	}
 	
-	void destroy(Bullet b){}
+	void update(){}
+	
+	void destroy(){}
 }

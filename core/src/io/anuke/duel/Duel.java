@@ -1,5 +1,7 @@
 package io.anuke.duel;
 
+import com.badlogic.gdx.graphics.Color;
+
 import io.anuke.duel.entities.Enemy;
 import io.anuke.duel.entities.Player;
 import io.anuke.duel.entities.effect.Projectile;
@@ -11,6 +13,8 @@ import io.anuke.ucore.modules.ModuleController;
 
 public class Duel extends ModuleController<Duel>{
 	public static final int health = 10000;
+	public static final Color ecolor = Color.ORANGE;
+	public static final Color pcolor = Color.ROYAL;
 	
 	@Override
 	public void init(){

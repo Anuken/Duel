@@ -13,7 +13,7 @@ background
   index: -1
 blaser
   rotate: false
-  xy: 118, 72
+  xy: 138, 92
   size: 1, 12
   orig: 1, 12
   offset: 0, 0
@@ -27,28 +27,42 @@ blaserend
   index: -1
 dirt
   rotate: false
-  xy: 104, 72
+  xy: 124, 92
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: -1
+elaser
+  rotate: false
+  xy: 118, 52
+  size: 1, 12
+  orig: 1, 12
+  offset: 0, 0
+  index: -1
+elaserend
+  rotate: false
+  xy: 104, 104
+  size: 18, 18
+  orig: 18, 18
+  offset: 0, 0
+  index: -1
 enemy
   rotate: false
-  xy: 104, 86
+  xy: 124, 106
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 laser
   rotate: false
-  xy: 118, 58
+  xy: 138, 78
   size: 1, 12
   orig: 1, 12
   offset: 0, 0
   index: -1
 laserend
   rotate: false
-  xy: 104, 104
+  xy: 22, 2
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
@@ -62,7 +76,7 @@ lockbullet
   index: -1
 mark
   rotate: false
-  xy: 124, 106
+  xy: 42, 4
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
@@ -76,7 +90,7 @@ particle1
   index: -1
 particle2
   rotate: false
-  xy: 104, 58
+  xy: 104, 52
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
@@ -97,7 +111,7 @@ particle4
   index: -1
 particle5
   rotate: false
-  xy: 104, 44
+  xy: 104, 38
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
@@ -109,9 +123,16 @@ particlebullet
   orig: 12, 12
   offset: 0, 0
   index: -1
+split3bullet
+  rotate: false
+  xy: 170, 110
+  size: 12, 12
+  orig: 12, 12
+  offset: 0, 0
+  index: -1
 player
   rotate: false
-  xy: 42, 4
+  xy: 104, 66
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
@@ -125,21 +146,21 @@ shadowbullet
   index: -1
 slaser
   rotate: false
-  xy: 118, 44
+  xy: 118, 38
   size: 1, 12
   orig: 1, 12
   offset: 0, 0
   index: -1
 slaserend
   rotate: false
-  xy: 22, 2
+  xy: 104, 84
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 spark1
   rotate: false
-  xy: 104, 30
+  xy: 104, 24
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
@@ -172,23 +193,16 @@ spark5
   orig: 12, 12
   offset: 0, 0
   index: -1
-split3bullet
+swarmbullet
   rotate: false
   xy: 240, 110
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: -1
-swarmbullet
-  rotate: false
-  xy: 104, 16
-  size: 12, 12
-  orig: 12, 12
-  offset: 0, 0
-  index: -1
 testbullet
   rotate: false
-  xy: 102, 2
+  xy: 124, 78
   size: 12, 12
   orig: 12, 12
   offset: 0, 0

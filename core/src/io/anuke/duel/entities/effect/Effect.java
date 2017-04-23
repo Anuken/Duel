@@ -4,13 +4,15 @@ import io.anuke.duel.effects.EffectType;
 import io.anuke.ucore.entities.Entity;
 
 public class Effect extends Entity{
-	EffectType type;
+	public EffectType type;
+	public Entity owner;
 	public float life;
 	public float lifetime;
 	
-	public Effect(EffectType type){
+	public Effect(Entity owner, EffectType type){
 		lifetime = type.lifetime;
 		this.type = type;
+		this.owner = owner;
 	}
 	
 	@Override
@@ -23,6 +25,7 @@ public class Effect extends Entity{
 	
 	@Override
 	public void draw(){
-		type.draw(this);
+		type.set(this);
+		type.draw();
 	}
 }

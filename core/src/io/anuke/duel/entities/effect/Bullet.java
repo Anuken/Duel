@@ -18,7 +18,8 @@ public class Bullet extends Projectile implements Collidable{
 	}
 	
 	public void draw(){
-		type.draw(this);
+		type.set(this);
+		type.draw();
 	}
 	
 	public void update(){
@@ -28,6 +29,9 @@ public class Bullet extends Projectile implements Collidable{
 		
 		if(life > type.lifetime)
 			remove();
+		
+		type.set(this);
+		type.update();
 	}
 	
 	public Entity target(){
@@ -36,7 +40,8 @@ public class Bullet extends Projectile implements Collidable{
 	
 	@Override
 	public void removed(){
-		type.destroy(this);
+		type.set(this);
+		type.destroy();
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package io.anuke.duel.entities.effect;
 import io.anuke.duel.Duel;
 import io.anuke.duel.effects.EffectType;
 import io.anuke.duel.effects.Effects;
+import io.anuke.duel.entities.Player;
 import io.anuke.ucore.core.Draw;
 import io.anuke.ucore.entities.Entity;
 import io.anuke.ucore.util.Mathf;
@@ -18,7 +19,7 @@ public class Portal extends TimedEntity{
 
 	@Override
 	public void draw(){
-		Draw.color(0.1f, 0.1f, 0.3f);
+		Draw.color(owner instanceof Player ? Duel.pcolor : Duel.ecolor);
 		
 		float f = 20f;
 		if(life > lifetime-f)
@@ -34,7 +35,7 @@ public class Portal extends TimedEntity{
 
 	public void update(){
 		if(life <= 1f)
-			Effects.effect(EffectType.portalwave, x, y);
+			Effects.effect(EffectType.portalwave, owner, x, y);
 
 		super.update();
 

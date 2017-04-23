@@ -4,7 +4,9 @@ import java.util.function.Consumer;
 
 import io.anuke.duel.Duel;
 import io.anuke.duel.entities.effect.Effect;
+import io.anuke.duel.entities.effect.Projectile;
 import io.anuke.duel.modules.Renderer;
+import io.anuke.ucore.entities.Entity;
 
 public class Effects{
 	
@@ -13,8 +15,16 @@ public class Effects{
 		rend().shaketime = duration;
 	}
 	
-	public static void effect(EffectType type, float x, float y){
-		new Effect(type).set(x, y).add();
+	public static void effect(EffectType type, Entity entity){
+		new Effect(entity, type).set(entity.x, entity.y).add();
+	}
+	
+	public static void effect(EffectType type, Entity entity, float x, float y){
+		new Effect(entity, type).set(x, y).add();
+	}
+	
+	public static void effect(EffectType type, Projectile entity){
+		new Effect(entity.owner, type).set(entity.x, entity.y).add();
 	}
 	
 	public static void overlay(float life, Consumer<Float> draw){

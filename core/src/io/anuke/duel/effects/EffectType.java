@@ -2,6 +2,8 @@ package io.anuke.duel.effects;
 
 import com.badlogic.gdx.graphics.Color;
 
+import io.anuke.duel.Duel;
+import io.anuke.duel.entities.Player;
 import io.anuke.duel.entities.effect.Effect;
 import io.anuke.ucore.core.Draw;
 import io.anuke.ucore.graphics.Hue;
@@ -10,8 +12,8 @@ public enum EffectType{
 	spikes{
 		{lifetime=10;}
 		
-		public void draw(Effect e){
-			Draw.color(Hue.mix(new Color(0x75ffafff), Color.ROYAL, e.life/lifetime));
+		public void draw(){
+			Draw.color(Hue.mix(Color.WHITE, color(), e.life/lifetime));
 			Draw.thickness(3f - e.life/lifetime);
 			
 			float add = e.life*3;
@@ -28,10 +30,8 @@ public enum EffectType{
 	smspikes{
 		{lifetime=10;}
 		
-		Color color = new Color(0x51ffbbff);
-		
-		public void draw(Effect e){
-			Draw.color(color);
+		public void draw(){
+			Draw.color(color());
 			Draw.thickness(2f);
 			
 			float add = e.life*2;
@@ -46,8 +46,8 @@ public enum EffectType{
 	sspikes{
 		{lifetime=30;}
 		
-		public void draw(Effect e){
-			Draw.color(Color.ROYAL);
+		public void draw(){
+			Draw.color(color());
 			Draw.thickness(3f);
 			//Draw.alpha(1f-e.life/lifetime+0.4f);
 			
@@ -64,8 +64,8 @@ public enum EffectType{
 	ospikes{
 		{lifetime=30;}
 		
-		public void draw(Effect e){
-			Draw.color(Color.ORANGE);
+		public void draw(){
+			Draw.color(color());
 			Draw.thickness(3f);
 			//Draw.alpha(1f-e.life/lifetime+0.4f);
 			
@@ -82,8 +82,8 @@ public enum EffectType{
 	wave{
 		{lifetime=10;}
 		
-		public void draw(Effect e){
-			Draw.color(Hue.mix(Color.ORANGE, Color.SCARLET, e.life/lifetime));
+		public void draw(){
+			Draw.color(Hue.mix(color(), Color.WHITE, e.life/lifetime));
 			Draw.thickness(3f + e.life/lifetime);
 			Draw.circle(e.x, e.y, 5f + e.life*5f);
 			Draw.thickness(1f);
@@ -94,8 +94,8 @@ public enum EffectType{
 	inwave{
 		{lifetime=20;}
 		
-		public void draw(Effect e){
-			Draw.color(Hue.mix(Color.WHITE, Color.ROYAL, e.life/lifetime));
+		public void draw(){
+			Draw.color(Hue.mix(Color.WHITE, color(), e.life/lifetime));
 			Draw.thickness(3f - e.life/lifetime);
 			Draw.circle(e.x, e.y, 40f - e.life*2f);
 			Draw.thickness(1f);
@@ -106,8 +106,8 @@ public enum EffectType{
 	rinwave{
 		{lifetime=20;}
 		
-		public void draw(Effect e){
-			Draw.color(Hue.mix(Color.WHITE, Color.ORANGE, e.life/lifetime));
+		public void draw(){
+			Draw.color(Hue.mix(Color.WHITE, color(), e.life/lifetime));
 			Draw.thickness(3f - e.life/lifetime);
 			Draw.circle(e.x, e.y, 40f - e.life*2f);
 			Draw.thickness(1f);
@@ -118,8 +118,8 @@ public enum EffectType{
 	redwave{
 		{lifetime=20;}
 		
-		public void draw(Effect e){
-			Draw.color(Hue.mix(Color.RED, Color.ORANGE, e.life/lifetime));
+		public void draw(){
+			Draw.color(Hue.mix(color(), Color.WHITE, e.life/lifetime));
 			Draw.thickness(3f - e.life/lifetime);
 			Draw.circle(e.x, e.y, 30f - e.life*1.5f);
 			Draw.thickness(1f);
@@ -130,8 +130,8 @@ public enum EffectType{
 	inspike{
 		{lifetime=20;}
 		
-		public void draw(Effect e){
-			Draw.color(Hue.mix(Color.ROYAL, Color.WHITE, e.life/lifetime));
+		public void draw(){
+			Draw.color(Hue.mix(color(), Color.WHITE, e.life/lifetime));
 			Draw.thickness(3f - e.life/lifetime);
 			Draw.circle(e.x, e.y, 40f - e.life*2f);
 			Draw.thickness(1f);
@@ -142,8 +142,8 @@ public enum EffectType{
 	rinspike{
 		{lifetime=20;}
 		
-		public void draw(Effect e){
-			Draw.color(Hue.mix(Color.ORANGE, Color.WHITE, e.life/lifetime));
+		public void draw(){
+			Draw.color(Hue.mix(color(), Color.WHITE, e.life/lifetime));
 			Draw.thickness(3f - e.life/lifetime);
 			Draw.circle(e.x, e.y, 40f - e.life*2f);
 			Draw.thickness(1f);
@@ -154,8 +154,8 @@ public enum EffectType{
 	lspike{
 		{lifetime=33;}
 		
-		public void draw(Effect e){
-			Draw.color(Hue.mix(Color.ROYAL, Color.WHITE, e.life/lifetime));
+		public void draw(){
+			Draw.color(Hue.mix(color(), Color.WHITE, e.life/lifetime));
 			Draw.thickness(5f - e.life/lifetime);
 			Draw.circle(e.x, e.y, 60f - e.life*2f);
 			Draw.thickness(1f);
@@ -166,8 +166,8 @@ public enum EffectType{
 	rlspike{
 		{lifetime=33;}
 		
-		public void draw(Effect e){
-			Draw.color(Hue.mix(Color.ORANGE, Color.WHITE, e.life/lifetime));
+		public void draw(){
+			Draw.color(Hue.mix(color(), Color.WHITE, e.life/lifetime));
 			Draw.thickness(5f - e.life/lifetime);
 			Draw.circle(e.x, e.y, 60f - e.life*2f);
 			Draw.thickness(1f);
@@ -178,8 +178,8 @@ public enum EffectType{
 	swave{
 		{lifetime=15;}
 		
-		public void draw(Effect e){
-			Draw.color(Hue.mix(Color.WHITE, new Color(0x51ffbbff), e.life/lifetime));
+		public void draw(){
+			Draw.color(Hue.mix(Color.WHITE, color(), e.life/lifetime));
 			Draw.thickness(3f - e.life/lifetime);
 			Draw.circle(e.x, e.y, 30f - e.life*2f);
 			Draw.thickness(1f);
@@ -190,8 +190,8 @@ public enum EffectType{
 	portalwave{
 		{lifetime=60;}
 		
-		public void draw(Effect e){
-			Draw.color(Hue.mix(Color.ROYAL, new Color(0.02f, 0.05f, 0.1f, 1f), e.life/lifetime));
+		public void draw(){
+			Draw.color(Hue.mix(color(), color(), e.life/lifetime));
 			Draw.thickness(7f - e.life/lifetime);
 			Draw.circle(e.x, e.y, 60f - e.life);
 			Draw.thickness(1f);
@@ -202,17 +202,15 @@ public enum EffectType{
 	spark{
 		{lifetime=13;}
 		
-		public void draw(Effect e){
+		public void draw(){
 			frames(e, 5);
 		}
 	},
 	particle{
 		{lifetime=13;}
 		
-		Color color = new Color(0x483bc3ff);
-		
-		public void draw(Effect e){
-			Draw.color(color);
+		public void draw(){
+			Draw.color(color());
 			Draw.thickness(1f);
 			
 			float add = e.life;
@@ -227,11 +225,11 @@ public enum EffectType{
 	orangespark{
 		{lifetime=13;}
 		
-		public void draw(Effect e){
+		public void draw(){
 			
 			float add = e.life;
 			
-			Draw.color(Color.WHITE);
+			Draw.color(color());
 			
 			Draw.spike(e.x, e.y, add, 3 + add, 6);
 			
@@ -241,8 +239,8 @@ public enum EffectType{
 	rspark{
 		{lifetime=13;}
 		
-		public void draw(Effect e){
-			Draw.color(Color.ROYAL);
+		public void draw(){
+			Draw.color(color());
 			Draw.thickness(2f);
 			
 			float add = e.life*2;
@@ -257,13 +255,13 @@ public enum EffectType{
 	shield{
 		{lifetime=30;}
 		
-		public void draw(Effect e){
+		public void draw(){
 			Draw.alpha(1f-e.life/e.lifetime);
-			Draw.tint(Color.ROYAL);
+			Draw.tint(color());
 			Draw.thickness(4f);
 			
 			Draw.circle(e.x, e.y, 100);
-			Draw.tint(Color.ORANGE);
+			Draw.tint(color());
 			
 			Draw.spike(e.x, e.y, e.life*4, e.life*4+20, 20);
 			
@@ -272,11 +270,21 @@ public enum EffectType{
 			Draw.color();
 		}
 	};
+	Effect e;
+	float x, y;
 	
 	public float lifetime;
 	
-	public void draw(Effect e){
-		
+	public void set(Effect e){
+		this.e = e;
+		x = e.x;
+		y = e.y;
+	}
+	
+	public abstract void draw();
+	
+	Color color(){
+		return e.owner instanceof Player ? Duel.pcolor : Duel.ecolor;
 	}
 	
 	void frames(Effect e, int frames){
