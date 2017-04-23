@@ -11,8 +11,8 @@ import io.anuke.ucore.entities.Entity;
 public class Effects{
 	
 	public static void shake(float intensity, float duration){
-		rend().shakeintensity = intensity;
-		rend().shaketime = duration;
+		rend().shakeintensity = Math.max(intensity, rend().shakeintensity);
+		rend().shaketime = Math.max(duration, rend().shaketime);
 	}
 	
 	public static void effect(EffectType type, Entity entity){

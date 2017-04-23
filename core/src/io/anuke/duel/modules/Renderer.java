@@ -43,6 +43,8 @@ public class Renderer extends RendererModule<Duel>{
 	
 	@Override
 	public void update(){
+		if(!getModule(UI.class).playing) return;
+		
 		EntityHandler.instance().update();
 		
 		for(Entity e : EntityHandler.instance().getEntities()){
@@ -51,8 +53,10 @@ public class Renderer extends RendererModule<Duel>{
 		
 		camera.position.set(0, 0, 0);
 		if(shaketime > 0){
+			float shakeintensity = this.shakeintensity*getModule(UI.class).getPrefs().getInteger("screenshake", 3);
 			camera.position.add(Mathf.random(-shakeintensity, shakeintensity), Mathf.random(-shakeintensity, shakeintensity), 0);
 			shaketime -= delta();
+			this.shakeintensity -= 0.1f;
 		}
 		
 		camera.update();

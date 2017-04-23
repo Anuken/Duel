@@ -59,14 +59,17 @@ public enum BulletType{
 			Effects.effect(EffectType.particle, b);
 		}
 	},
-	split1(4f, 4){
+	split1(5f, 3){
 		{lifetime = 50;}
 		void destroy(){
-			int shots = 4;
-			
+			int shots = 3;
+			vector.set(0, 1);
 			for(int i = 0; i < shots; i ++){
 				float angle = 360f/shots*i;
-				new Bullet(b.owner, BulletType.split2, angle).set(b.x, b.y).add();
+				vector.setAngle(angle+90);
+				//new Bullet(b.owner, BulletType.split2, angle).set(b.x, b.y).add();
+				new Laser(b.owner, x, y, x + vector.x, y+ vector.y).add();
+				Effects.effect(EffectType.rinwave, b);
 			}
 		}
 		
@@ -78,20 +81,24 @@ public enum BulletType{
 			Draw.color();
 		}
 	},
-	split2(3f, 2){
+	ball(5f, 30){
 		{lifetime = 60;}
 		void destroy(){
 			int shots = 3;
 			
 			for(int i = 0; i < shots; i ++){
-				float angle = 360f/shots*i;
-				new Bullet(b.owner, BulletType.split3, angle).set(b.x, b.y).add();
+				//float angle = 360f/shots*i;
+				//new Bullet(b.owner, BulletType.split3, angle).set(b.x, b.y).add();
+				
 			}
+			Effects.effect(EffectType.rspark, b);
 		}
 		
 		void draw(){
 			Draw.color(color());
-			Draw.circle(b.x, b.y, 8);
+			Draw.thickness(5);
+			Draw.circle(b.x, b.y, 15);
+			Draw.thickness(1f);
 			Draw.color();
 		}
 	},

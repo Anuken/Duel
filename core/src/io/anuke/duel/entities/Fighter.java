@@ -13,6 +13,7 @@ public abstract class Fighter extends Entity implements Collidable, Damageable{
 	float hittime = 5f;
 	float hit = 0;
 	float time;
+	float speed = 8f;
 	
 	public void attack(Attacks attack){
 		attack.use(this);

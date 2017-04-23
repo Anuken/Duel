@@ -12,7 +12,6 @@ public class Enemy extends Fighter{
 	Player player;
 	Vector2 vector = new Vector2(0.5f, 0.5f);
 	int health = Duel.health;
-	float speed = 6.5f;
 	boolean away = true;
 	boolean flip = false;
 	float angle = 90;
@@ -28,7 +27,15 @@ public class Enemy extends Fighter{
 			attack(Attacks.tricannon);
 		}
 		
-		if(rand(0.02) && Duel.module(Control.class).getNear(x, y, 100) > 80){
+		if(rand(0.002)){
+			for(int i = 0; i < 3; i ++){
+				Timers.run(i*8, ()->{
+					attack(Attacks.balls);
+				});
+			}
+		}
+		
+		if(rand(0.02) && Duel.module(Control.class).getNear(x, y, 100) > 60){
 			attack(Attacks.reverseshield);
 		}
 		

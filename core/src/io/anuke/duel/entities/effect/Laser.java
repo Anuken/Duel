@@ -1,5 +1,6 @@
 package io.anuke.duel.entities.effect;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 
 import io.anuke.duel.Duel;
@@ -15,7 +16,7 @@ import io.anuke.ucore.util.Mathf;
 
 public class Laser extends Projectile{
 	float charge = 25;
-	float life = 60;
+	float life = 55;
 	float targetx, targety;
 	float time;
 	
@@ -80,7 +81,7 @@ public class Laser extends Projectile{
 		
 		if(time > charge){
 			if(not){
-				Effects.shake(5, 5f);
+				Effects.shake(6, 8f);
 				if(owner instanceof Player)
 					Effects.effect(EffectType.sspikes, this);
 				else
@@ -113,14 +114,15 @@ public class Laser extends Projectile{
 			
 			Draw.alpha(Mathf.clamp((1f-(Mathf.clamp((time-charge)/(life-charge))))*2f));
 			if(owner instanceof Enemy){
-				Draw.color(Duel.ecolor);
+				Draw.tint(Duel.ecolor);
 			}else{
-				Draw.color(Duel.pcolor);
+				Draw.tint(Duel.pcolor);
 			}
 			
 			Draw.laser("laser", "laserend", x, y, targetx, targety);
-			Draw.color();
+			Draw.tint(Color.WHITE);
 			Draw.laser("elaser", "elaserend", x, y, targetx, targety);
+			Draw.color();
 		}
 	}
 

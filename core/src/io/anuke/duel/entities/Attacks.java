@@ -88,11 +88,21 @@ public enum Attacks{
 	}, 
 	split{
 		void impl(){
-			int shots = 4;
+			int shots = 6;
 			
 			for(int i = 0; i < shots; i ++){
 				float angle = 360f/shots*i+45;
 				shoot(BulletType.split1, angle);
+			}
+		}
+	}, 
+	balls{
+		void impl(){
+			int shots = 30;
+			
+			for(int i = 0; i < shots; i ++){
+				float angle = 360f/shots*i;
+				shoot(BulletType.ball, angle);
 			}
 		}
 	}, 

@@ -12,13 +12,12 @@ import io.anuke.ucore.util.Angles;
 public class Player extends Fighter implements Collidable, Damageable{
 	private Vector2 vector = new Vector2();
 	float bounds = 100;
-	float speed = 7;
 	float dashspeed = 20;
 	
 	public void update(){
 		
 		if(UInput.keyUp("weapon1")){
-			attack(Attacks.tricannon);
+			attack(Attacks.balls);
 		}
 		
 		if(UInput.keyUp("weapon2")){
