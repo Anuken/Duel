@@ -3,8 +3,10 @@ package io.anuke.duel.entities.effect;
 import com.badlogic.gdx.math.Vector2;
 
 import io.anuke.duel.Duel;
+import io.anuke.duel.Util;
 import io.anuke.duel.effects.EffectType;
 import io.anuke.duel.effects.Effects;
+import io.anuke.duel.entities.Damageable;
 import io.anuke.duel.entities.Enemy;
 import io.anuke.duel.entities.Player;
 import io.anuke.ucore.core.Draw;
@@ -83,6 +85,13 @@ public class Laser extends Projectile{
 					Effects.effect(EffectType.sspikes, x, y);
 				else
 					Effects.effect(EffectType.ospikes, x, y);
+			}
+			
+			Entity target = Duel.other(owner);
+			
+			if(Util.intersects(target, x, y, targetx, targety)){
+				((Damageable)target).damage(5);
+				Effects.effect(EffectType.particle, target.x, target.y);
 			}
 		}
 		

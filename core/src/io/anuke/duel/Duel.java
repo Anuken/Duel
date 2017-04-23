@@ -5,6 +5,7 @@ import io.anuke.duel.entities.Player;
 import io.anuke.duel.entities.effect.Projectile;
 import io.anuke.duel.modules.Control;
 import io.anuke.duel.modules.Renderer;
+import io.anuke.duel.modules.UI;
 import io.anuke.ucore.entities.Entity;
 import io.anuke.ucore.modules.ModuleController;
 
@@ -14,6 +15,7 @@ public class Duel extends ModuleController<Duel>{
 	public void init(){
 		addModule(Control.class);
 		addModule(Renderer.class);
+		addModule(UI.class);
 	}
 	
 	public static Entity other(Entity e){

@@ -17,12 +17,17 @@ public class Enemy extends Entity implements Collidable, Damageable{
 	float angle = 90;
 	boolean flip = false;
 	
+	void combat(){
+		
+	}
+	
+	void attack(Attacks attack){
+		attack.use(this);
+	}
+	
 	@Override
 	public void update(){
 		vector.set(player.x - x, player.y - y);
-		
-		//if(Math.random() < 0.01)
-		//	away = !away;
 		
 		if(Math.random() < 0.03)
 			angle = 0;
@@ -40,6 +45,8 @@ public class Enemy extends Entity implements Collidable, Damageable{
 		
 		x += vector.x*delta();
 		y += vector.y*delta();
+		
+		combat();
 	}
 	
 	@Override
