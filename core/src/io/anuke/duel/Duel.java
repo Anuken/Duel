@@ -9,6 +9,7 @@ import io.anuke.duel.modules.Control;
 import io.anuke.duel.modules.Renderer;
 import io.anuke.duel.modules.UI;
 import io.anuke.ucore.entities.Entity;
+import io.anuke.ucore.entities.EntityHandler;
 import io.anuke.ucore.modules.ModuleController;
 
 public class Duel extends ModuleController<Duel>{
@@ -25,8 +26,22 @@ public class Duel extends ModuleController<Duel>{
 		addModule(Renderer.class);
 		addModule(UI.class);
 		
-		player = new Player().add();
-		enemy = new Enemy().add();
+		player = new Player();
+		enemy = new Enemy();
+		
+		restart();
+	}
+	
+	public static void restart(){
+		enemy.y = 200;
+		player.y = -200;
+		
+		enemy.health = health;
+		player.health = health;
+		
+		EntityHandler.instance().entities.clear();
+		player.add();
+		enemy.add();
 	}
 	
 	public static Entity other(Entity e){

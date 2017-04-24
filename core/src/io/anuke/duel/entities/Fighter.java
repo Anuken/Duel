@@ -9,7 +9,7 @@ import io.anuke.ucore.entities.Entity;
 import io.anuke.ucore.graphics.Hue;
 
 public abstract class Fighter extends Entity implements Collidable, Damageable{
-	int health = Duel.health;
+	public int health = Duel.health;
 	float hittime = 5f;
 	float hit = 0;
 	float time;

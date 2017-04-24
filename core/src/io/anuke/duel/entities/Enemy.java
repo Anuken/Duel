@@ -10,7 +10,6 @@ import io.anuke.ucore.util.Timers;
 public class Enemy extends Fighter{
 	Player player;
 	Vector2 vector = new Vector2(0.5f, 0.5f);
-	int health = Duel.health;
 	boolean away = true;
 	boolean flip = false;
 	float angle = 90;

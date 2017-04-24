@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Align;
 
 import io.anuke.SceneModule;
 import io.anuke.duel.Duel;
+import io.anuke.duel.effects.Effects;
 import io.anuke.duel.entities.Damageable;
 import io.anuke.duel.entities.Player;
 import io.anuke.duel.entities.Player.AttackInfo;
@@ -23,18 +24,21 @@ import io.anuke.scene.utils.CursorManager;
 import io.anuke.scene.utils.HandCursorListener;
 import io.anuke.ucore.core.Draw;
 import io.anuke.ucore.core.KeyBinds;
+import io.anuke.ucore.core.UInput;
 import io.anuke.ucore.entities.Entity;
+import io.anuke.ucore.util.Timers;
 
 public class UI extends SceneModule<Duel>{
 	boolean playing = false;
 	boolean dead = false;
 	BooleanSupplier visible = ()->{return !playing;};
 	BooleanSupplier nvisible = ()->{return playing;};
-	
 	Dialog settings;
 	Dialog restart;
+	Dialog next;
 	Preferences prefs;
 	int battle = 0;
+	boolean countdown = false;
 	
 	public UI(){
 		Styles.load((styles = new Styles(Gdx.files.internal("ui/uiskin.json"))));
@@ -65,7 +69,7 @@ public class UI extends SceneModule<Duel>{
 			prefs.flush();
 		});
 		slider.change();
-		table.add(label).padRight(60).minWidth(330);
+		table.add(label).minWidth(330);
 		table.add(slider);
 		table.addButton("Reset", ()->{
 			slider.setValue(def);
@@ -75,12 +79,26 @@ public class UI extends SceneModule<Duel>{
 	}
 	
 	void setup(){
+		next = new Dialog("victory!");
+		next.getTitleLabel().setColor(Color.CORAL);
+		next.padTop(next.getPadTop()-20);
+		next.getContentTable().pad(50);
+		next.text("Select a loadout.");
+		next.setMovable(false);
+		
 		restart = new Dialog("you died.");
 		restart.getTitleLabel().setColor(Color.CORAL);
 		restart.text("Press [YELLOW][[ENTER][WHITE] to restart.");
 		restart.setMovable(false);
 		restart.padTop(restart.getPadTop()-20);
 		restart.getContentTable().pad(50);
+		restart.getContentTable().row();
+		restart.getContentTable().addButton("back to Menu", ()->{
+			restart();
+			dead = false;
+			playing = false;
+			restart.hide();
+		}).padTop(10f);
 		
 		
 		SceneBuild.begin(scene);
@@ -93,6 +111,8 @@ public class UI extends SceneModule<Duel>{
 			get().background("button");
 			get().setVisible(visible);
 			
+			get().addChild(new Background());
+			
 			new button("Play", ()->{
 				play();
 			}).width(200);
@@ -104,9 +124,12 @@ public class UI extends SceneModule<Duel>{
 					addCloseButton();
 					getTitleLabel().setColor(Color.CORAL);
 					
-					text("Some random placeholder text that nobody will read, "
-							+ "\nbut might as well add it anyway just in case. "
-							+ "\nAlso, sample text sample text sample text.");
+					text("Made by [YELLOW]Anuken[WHITE] for the [GREEN]LD38[] jam.\n"
+							+ "\nTools used:"
+							+ "\n- [ORANGE]libGDX[] base game library"
+							+ "\n- [PURPLE]jukedeck.com[] for music"
+							+ "\n- [RED]1001fonts.com[] for fonts"
+							);
 				}}.show(scene);
 			}).width(200);
 			
@@ -122,7 +145,7 @@ public class UI extends SceneModule<Duel>{
 			get().setVisible(visible);
 			atop();
 			
-			new label("Duel"){{
+			new label("- [ORANGE]Duel [WHITE]-"){{
 				get().setFontScale(2f);
 			}}.align(Align.top);
 			
@@ -153,18 +176,55 @@ public class UI extends SceneModule<Duel>{
 	}
 	
 	void play(){
+		restart();
 		playing = true;
 		CursorManager.restoreCursor();
 	}
 	
+	void restart(){
+		Duel.restart();
+		dead = false;
+		restart.hide();
+		countdown = false;
+		
+		float time = 200;
+		
+		Timers.run(time, ()->{
+			countdown = true;
+		});
+		
+		Effects.overlay(time, f->{
+			Draw.tscl(2f);
+			Draw.text((int)((time-f)/(time/5)) + "", 0, 0);
+			Draw.tscl(1f);
+			
+			Draw.color(Color.ROYAL);
+			Draw.thickness(8f);
+			Draw.spike(0, -20, 70, 200, 10, Timers.time()/2f);
+			Draw.color();
+			Draw.thickness(1f);
+		});
+	}
+	
 	@Override
 	public void update(){
-		if(Duel.player().health() < 0){
-			if(!dead)
-				restart.show(scene);
+		if(UInput.keyDown(Keys.R))
+			Duel.enemy.health = 0;
+		
+		if(Duel.player().health() <= 0 && !dead){
+			restart.show(scene);
 			dead = true;
 			
+			if(UInput.keyDown(Keys.ENTER)){
+				restart();
+			}
 		}
+		
+		if(Duel.enemy.health() <= 0 && !dead){
+			next.show(scene);
+			dead = true;
+		}
+		
 		act();
 	}
 	
@@ -175,6 +235,24 @@ public class UI extends SceneModule<Duel>{
 	
 	static interface StringProcessor{
 		String get(int in);
+	}
+	
+	class Background extends Element{
+		{
+			setFillParent(true);
+		}
+		
+		public void draw(){
+			if(!playing){
+				float rad = 260;
+				Draw.color(Color.ROYAL);
+				Draw.thickness(6);
+				Draw.circle(gwidth()/2, gheight()/2, rad);
+				Draw.spike(gwidth()/2, gheight()/2, rad-30, rad+30, 20, Timers.time()/2f);
+				Draw.thickness(1f);
+				Draw.color();
+			}
+		}
 	}
 	
 	class AttackIndicator extends Element{

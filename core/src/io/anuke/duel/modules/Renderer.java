@@ -23,10 +23,8 @@ public class Renderer extends RendererModule<Duel>{
 	private Array<Overlay> removal = new Array<Overlay>();
 	private UI ui;
 	
-
 	public Array<Overlay> overlays = new Array<>();
 	public float shakeintensity, shaketime;
-	
 	
 	
 	public Renderer(){
@@ -35,9 +33,7 @@ public class Renderer extends RendererModule<Duel>{
 		atlas = new Atlas(Gdx.files.internal("sprites/duel.atlas"));
 		font = new BitmapFont(Gdx.files.internal("fonts/prose.fnt"));
 		
-		
 		font.getData().setScale(1/2f);
-		
 		
 		
 		setPixelation();
@@ -51,7 +47,7 @@ public class Renderer extends RendererModule<Duel>{
 	public void update(){
 		if(!ui.playing || ui.dead) return;
 		
-		EntityHandler.instance().update();
+		EntityHandler.instance().update(ui.countdown);
 		
 		for(Entity e : EntityHandler.instance().getEntities()){
 			clampBounds(e);
