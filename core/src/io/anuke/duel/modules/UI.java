@@ -36,8 +36,10 @@ public class UI extends SceneModule<Duel>{
 	Dialog settings;
 	Dialog restart;
 	Dialog next;
+	Dialog info;
 	Preferences prefs;
 	int battle = 0;
+	boolean played = false;
 	boolean countdown = false;
 	public boolean won = false;
 	
@@ -80,6 +82,27 @@ public class UI extends SceneModule<Duel>{
 	}
 	
 	void setup(){
+		info = new Dialog("info"){
+			protected void result(Object o){
+				play();
+			}
+		};
+		info.getTitleLabel().setColor(Color.CORAL);
+		info.padTop(info.getPadTop()-20);
+		info.getContentTable().pad(20);
+		info.text("How to play: "
+				+ "\n[YELLOW][[A][] to use attack 1"
+				+ "\n[YELLOW][[S][] to use attack 2"
+				+ "\n[YELLOW][[D][] to use attack 3"
+				+ "\n[YELLOW][[SPACE][] to use attack 4"
+				+ "\n[YELLOW][[ARROW KEYS][] to move"
+				+ "\n[YELLOW][[SHIFT][] to dash"
+				+ "\nDestroy the orange enemy to progress."
+				+ "\n\nPress [ORANGE][[SPACE][] to continue."
+				);
+		info.setMovable(false);
+		info.key(Keys.SPACE, true);
+		
 		next = new Dialog("victory!");
 		next.getTitleLabel().setColor(Color.CORAL);
 		next.padTop(next.getPadTop()-20);
@@ -177,9 +200,15 @@ public class UI extends SceneModule<Duel>{
 	}
 	
 	void play(){
-		restart();
-		playing = true;
-		CursorManager.restoreCursor();
+		if(!played){
+			info.show(scene);
+			dead = true;
+			played = true;
+		}else{
+			restart();
+			playing = true;
+			CursorManager.restoreCursor();
+		}
 	}
 	
 	void restart(){
