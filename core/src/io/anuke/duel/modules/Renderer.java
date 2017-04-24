@@ -1,6 +1,7 @@
 package io.anuke.duel.modules;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Array;
@@ -21,6 +22,8 @@ public class Renderer extends RendererModule<Duel>{
 	//private GifRecorder recorder = new GifRecorder(batch);
 	private Array<Overlay> removal = new Array<Overlay>();
 	private UI ui;
+	private Music[] music = {music("1"), music("2"), music("3"), music("4"), music("5"), music("6")};
+	private Music playing;
 	
 	public Array<Overlay> overlays = new Array<>();
 	public float shakeintensity, shaketime;
@@ -36,6 +39,26 @@ public class Renderer extends RendererModule<Duel>{
 		
 		
 		setPixelation();
+		
+		for(Music m : music)
+			m.setOnCompletionListener(other->{
+				Music temp;
+				do{
+					temp = music[Mathf.random(music.length-1)];
+				}while(temp != playing);
+				
+				playing = temp;
+				playing.play();
+				playing.setVolume(0.2f);
+			});
+		
+		playing = music[Mathf.random(music.length-1)];
+		playing.play();
+		playing.setVolume(0.2f);
+	}
+	
+	Music music(String name){
+		return Gdx.audio.newMusic(Gdx.files.internal("music/" + name +".mp3"));
 	}
 	
 	public void init(){
@@ -44,7 +67,11 @@ public class Renderer extends RendererModule<Duel>{
 	
 	@Override
 	public void update(){
-		if(!ui.playing || ui.dead) return;
+		if(!ui.playing || ui.dead){
+			playing.setVolume(0.2f);
+			return;
+		}
+		playing.setVolume(1f);
 		
 		EntityHandler.instance().update(ui.countdown);
 		
