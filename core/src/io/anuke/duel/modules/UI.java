@@ -48,7 +48,7 @@ public class UI extends SceneModule<Duel>{
 	AttackIndicator[] indicators = new AttackIndicator[4];
 	Table selectable;
 	Preferences prefs;
-	boolean played = true; //TODO put this back
+	boolean played = false; //TODO put this back
 	boolean countdown = false;
 	public boolean won = false;
 	
@@ -233,13 +233,11 @@ public class UI extends SceneModule<Duel>{
 		next.getContentTable().row();
 		next.getContentTable().add(atable).padTop(30);
 		next.pack();
-		//end
 		
-		//this runs each time the player wins
 		
 		restart = new Dialog("you died.");
 		restart.getTitleLabel().setColor(Color.CORAL);
-		restart.text("Press [YELLOW][[SPACE][WHITE] to restart.");
+		restart.text("Press [YELLOW][[SPACE][WHITE] to restart.").padBottom(10);
 		restart.setMovable(false);
 		restart.padTop(restart.getPadTop()-20);
 		restart.getContentTable().pad(50);

@@ -12,7 +12,7 @@ import io.anuke.ucore.util.Mathf;
 import io.anuke.ucore.util.Timers;
 
 public enum Attacks{
-	swarm(30, "Shoots a swarm of seeking bullets."){
+	swarm(50, "Shoots a swarm of seeking bullets."){
 		void impl(){
 			for(int i = 0; i < 15; i ++)
 				shoot(BulletType.swarm, Mathf.random(360f));
@@ -20,14 +20,25 @@ public enum Attacks{
 			Effects.effect(EffectType.rspark, entity);
 		}
 	}, 
-	cannon(5, "Shoots a powerful fast-moving bullet."){
-		void impl(){
+	cannon(10, "Shoots a powerful fast-moving bullet."){
+			void impl(){
 			
 			Effects.effect(EffectType.inspike, entity);
 			
 			Timers.run(20, ()->{
 				shoot(BulletType.blast, enemyAngle());
 			});
+		}
+	},
+	cannonsphere(200, "alasersphere", "Shoots a circles of fast-moving bullets."){
+		void impl(){
+			int shots = 60;
+			for(int i = 0; i < shots; i ++){
+				int index = i;
+				Timers.run(i, ()->{
+					shoot(BulletType.blast, index*360f/shots*3f);
+				});
+			}
 		}
 	},
 	mark(100, "Shoots multiple fast-moving bullets in sequence."){
@@ -65,6 +76,17 @@ public enum Attacks{
 			});
 		}
 	},
+	multishot(40, "ashadow", "Shoots a barrage of small bullets."){
+		void impl(){
+			
+			for(int i = 0; i < 20; i ++)
+			Timers.run(i, ()->{
+				for(int j = 0; j < 2; j ++)
+				shoot(BulletType.particle, enemyAngle()+Mathf.random(-4, 4));
+				Effects.shake(3, 2);
+			});
+		}
+	},
 	shot(100, "Shoots a swarm of various seeking bullets."){
 		void impl(){
 			
@@ -77,7 +99,7 @@ public enum Attacks{
 			Effects.effect(EffectType.rspark, entity);
 		}
 	},
-	lock(100, "Shoots a circle of seeking bullets."){
+	lock(120, "Shoots a circle of seeking bullets."){
 		void impl(){
 			int shots = 20;
 			
@@ -87,7 +109,7 @@ public enum Attacks{
 			}
 		}
 	},
-	portal(100, "Opens a portal that targets the enemy."){
+	portal(110, "Opens a portal that targets the enemy."){
 		void impl(){
 			vector.setToRandomDirection().setLength(30);
 			
@@ -97,17 +119,17 @@ public enum Attacks{
 			}
 		}
 	}, 
-	megaportal(100, "Opens a large portal that targets the enemy."){
+	megaportal(160, "Opens a large portal that targets the enemy."){
 		void impl(){
 			new MegaPortal(entity).set(x+vector.x, y+vector.y).add();
 		}
 	},
-	laserportal(100, "Opens a laser portal that targets the enemy."){
+	laserportal(210, "Opens a laser portal that targets the enemy."){
 		void impl(){
 			new LaserPortal(entity).set(x+vector.x, y+vector.y).add();
 		}
 	}, 
-	split(100, "Shoots 3 bullets that each shoot 3 lasers."){
+	split(130, "Shoots 3 bullets that each shoot 3 lasers."){
 		void impl(){
 			int shots = 3;
 			
@@ -127,7 +149,7 @@ public enum Attacks{
 			}
 		}
 	}, 
-	laserballs(100, "Shoots laser-firing projectiles in a circle."){
+	laserballs(140, "Shoots laser-firing projectiles in a circle."){
 		void impl(){
 			int shots = 5;
 			
@@ -137,7 +159,7 @@ public enum Attacks{
 			}
 		}
 	}, 
-	reverseshield(100, "Takes control of all nearby bullets and makes them target the enemy."){
+	reverseshield(230, "Takes control of all nearby bullets and makes them target the enemy."){
 		void impl(){
 			
 			Effects.effect(EffectType.shield, entity);
@@ -151,13 +173,40 @@ public enum Attacks{
 			}
 		}
 	}, 
-	trilaser(100, "Shoots three lasers in sequence."){
+	trilaser(110, "Shoots three lasers in sequence."){
 		void impl(){
 			for(int i = 0; i < 3; i ++){
 				vector.setToRandomDirection().setLength(70);
 				
 				Effects.effect(entity instanceof Player ? EffectType.lspike : EffectType.rlspike, entity, vector.x+x, vector.y+y);
 				new Laser(entity,vector.x+x, vector.y+y, other.x, other.y).add();
+			}
+		}
+	},
+	lasercannon(160, "Shoots many lasers in a burst."){
+		void impl(){
+			for(int i = 0; i < 25; i ++){
+				Timers.run(i*3, ()->{
+					Effects.effect(entity instanceof Player ? EffectType.lspike : EffectType.rlspike, entity, entity.x, entity.y);
+					new Laser(entity, entity.x, entity.y, other.x, other.y).add();
+				});
+			}
+		}
+	},
+	lasersphere(230, "Shoots lasers in a circular pattern."){
+		void impl(){
+			int lasers = 15;
+			vector.set(0, 1);
+			for(int i = 0; i < lasers; i ++){
+				vector.setAngle(i*360f/lasers);
+
+				float mx = vector.x;
+				float my = vector.y;
+				Timers.run(i*5, ()->{
+					Effects.effect(entity instanceof Player ? EffectType.lspike : EffectType.rlspike, entity, entity.x, entity.y);
+					new Laser(entity, entity.x, entity.y, entity.x + mx, entity.y + my).add();
+					//new Laser(entity, entity.x, entity.y, entity.x - mx, entity.y + my).add();
+				});
 			}
 		}
 	};

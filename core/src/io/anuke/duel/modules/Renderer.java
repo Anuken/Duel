@@ -43,7 +43,7 @@ public class Renderer extends RendererModule<Duel>{
 		
 		for(Music m : music)
 			m.setOnCompletionListener(other->{
-				while(playing != other)
+				while(playing == other)
 				playing = music[Mathf.random(music.length-1)];
 				playing.play();
 				playing.setVolume(minvol*vol());

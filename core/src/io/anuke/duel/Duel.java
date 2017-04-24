@@ -17,7 +17,7 @@ public class Duel extends ModuleController<Duel>{
 	public static Enemy enemy;
 	
 	public static int battle = 1;
-	public static int health = 1000;
+	public static int health = 800;
 	public static final Color ecolor = Color.ORANGE;
 	public static final Color pcolor = Color.ROYAL;
 	

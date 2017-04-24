@@ -27,10 +27,8 @@ public class Player extends Fighter implements Collidable, Damageable{
 	public Player(){
 		speed = 9f;
 		
-		for(int i = 0; i < 4; i ++)
-			attacks[i] = new AttackInfo(Attacks.tricannon);
-		
-		attacks[1] = new AttackInfo(Attacks.lock);
+		attacks[0] = new AttackInfo(Attacks.tricannon);
+		attacks[1] = new AttackInfo(Attacks.multishot);
 		attacks[2] = new AttackInfo(Attacks.mark);
 		attacks[3] = new AttackInfo(Attacks.cannon);
 	}

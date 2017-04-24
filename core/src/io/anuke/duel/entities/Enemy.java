@@ -18,17 +18,35 @@ public class Enemy extends Fighter{
 	
 	void combat(){
 		
-		
-		if(rand(0.08)){
+		if(rand(0.09)){
 			attack(Attacks.cannon);
 		}
 		
-		if(rand(0.02)){
+		if(Duel.battle > 7)
+		if(rand(0.09)){
+			attack(Attacks.cannon);
+		}
+		
+		if(Duel.battle > 8)
+		if(rand(0.0008)){
+			attack(Attacks.lasercannon);
+		}
+		
+		if(rand(0.03)){
 			attack(Attacks.lock);
 		}
 		
-		if(rand(0.008)){
+		if(rand(0.009)){
 			attack(Attacks.shot);
+		}
+		
+		if(rand(0.01)){
+			attack(Attacks.multishot);
+		}
+		
+		if(Duel.battle > 2)
+		if(rand(0.004)){
+			attack(Attacks.shadow);
 		}
 		
 		if(Duel.battle > 1)
@@ -100,8 +118,33 @@ public class Enemy extends Fighter{
 		}
 		
 		if(Duel.battle > 4)
-		if(rand(0.004)){
+		if(rand(0.005)){
 			attack(Attacks.portal);
+		}
+		
+		if(Duel.battle > 5)
+		if(rand(0.004)){
+			attack(Attacks.megaportal);
+		}
+		
+		if(Duel.battle > 6)
+		if(rand(0.002)){
+			attack(Attacks.laserportal);
+		}
+		
+		if(Duel.battle > 7)
+		if(rand(0.003)){
+			attack(Attacks.lasersphere);
+		}
+		
+		if(Duel.battle > 6)
+			if(rand(0.004)){
+				attack(Attacks.cannonsphere);
+			}
+		
+		if(Duel.battle > 6)
+		if(rand(0.004)){
+			attack(Attacks.laserballs);
 		}
 		
 		
@@ -138,12 +181,12 @@ public class Enemy extends Fighter{
 		vector.rotate(flip ? angle : 360-angle);
 		vector.setLength(speed);
 		
-		if(standtime <= 0){
+		//if(standtime <= 0){
 			x += vector.x*delta();
 			y += vector.y*delta();
-		}else{
-			standtime -= delta();
-		}
+		//}else{
+		//	standtime -= delta();
+		//}
 		
 		time += vector.x < 0 ? delta()*4 : vector.x > 0 ? -delta()*4 : 0;
 		
@@ -151,7 +194,7 @@ public class Enemy extends Fighter{
 	}
 	
 	boolean rand(double d){
-		return Math.random()<d*delta();
+		return Math.random()<d*delta()*(1f+(Duel.battle-1f)/16f);
 	}
 	
 	@Override

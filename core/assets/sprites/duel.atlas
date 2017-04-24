@@ -4,93 +4,114 @@ size: 256,128
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-acannon
+abeamlaser
   rotate: false
   xy: 60, 2
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
-alaserballs
+alasercannon
+  rotate: false
+  xy: 60, 2
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+acannon
   rotate: false
   xy: 70, 2
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
-alock
+alaserballs
   rotate: false
   xy: 80, 2
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
-amark
+alasersphere
   rotate: false
   xy: 90, 2
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
-amegaportal
+alock
   rotate: false
   xy: 100, 2
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
-aportal
+amark
   rotate: false
   xy: 110, 2
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
-areverseshield
+amegaportal
   rotate: false
   xy: 124, 86
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
-ashadow
+aportal
   rotate: false
   xy: 122, 76
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
-ashot
+areverseshield
   rotate: false
   xy: 134, 86
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
-asplit
+ashadow
   rotate: false
   xy: 132, 76
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
-aswarm
+ashot
   rotate: false
   xy: 122, 66
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
-atricannon
+asplit
   rotate: false
   xy: 132, 66
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
-atrilaser
+aswarm
   rotate: false
   xy: 121, 56
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+atricannon
+  rotate: false
+  xy: 121, 46
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+atrilaser
+  rotate: false
+  xy: 131, 56
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
@@ -300,7 +321,7 @@ testbullet
   index: -1
 white
   rotate: false
-  xy: 121, 46
+  xy: 131, 46
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
