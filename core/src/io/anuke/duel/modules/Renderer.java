@@ -7,7 +7,8 @@ import com.badlogic.gdx.utils.Array;
 
 import io.anuke.duel.Duel;
 import io.anuke.duel.effects.Overlay;
-import io.anuke.duel.entities.*;
+import io.anuke.duel.entities.Collidable;
+import io.anuke.duel.entities.Damageable;
 import io.anuke.gif.GifRecorder;
 import io.anuke.ucore.core.Draw;
 import io.anuke.ucore.entities.Entity;
@@ -20,11 +21,12 @@ public class Renderer extends RendererModule<Duel>{
 	private boolean debug = false;
 	private GifRecorder recorder = new GifRecorder(batch);
 	private Array<Overlay> removal = new Array<Overlay>();
+	private UI ui;
 	
-	public Player player;
-	public Enemy enemy;
+
 	public Array<Overlay> overlays = new Array<>();
 	public float shakeintensity, shaketime;
+	
 	
 	
 	public Renderer(){
@@ -32,18 +34,22 @@ public class Renderer extends RendererModule<Duel>{
 		
 		atlas = new Atlas(Gdx.files.internal("sprites/duel.atlas"));
 		font = new BitmapFont(Gdx.files.internal("fonts/prose.fnt"));
-		player = new Player().add();
+		
 		
 		font.getData().setScale(1/2f);
 		
-		enemy = new Enemy().add();
+		
 		
 		setPixelation();
 	}
 	
+	public void init(){
+		ui = getModule(UI.class);
+	}
+	
 	@Override
 	public void update(){
-		if(!getModule(UI.class).playing) return;
+		if(!ui.playing || ui.dead) return;
 		
 		EntityHandler.instance().update();
 		

@@ -12,7 +12,10 @@ import io.anuke.ucore.entities.Entity;
 import io.anuke.ucore.modules.ModuleController;
 
 public class Duel extends ModuleController<Duel>{
-	public static final int health = 10000;
+	public static Player player;
+	public static Enemy enemy;
+	
+	public static final int health = 1000;
 	public static final Color ecolor = Color.ORANGE;
 	public static final Color pcolor = Color.ROYAL;
 	
@@ -21,6 +24,9 @@ public class Duel extends ModuleController<Duel>{
 		addModule(Control.class);
 		addModule(Renderer.class);
 		addModule(UI.class);
+		
+		player = new Player().add();
+		enemy = new Enemy().add();
 	}
 	
 	public static Entity other(Entity e){
@@ -28,11 +34,11 @@ public class Duel extends ModuleController<Duel>{
 	}
 	
 	public static Player player(){
-		return module(Renderer.class).player;
+		return player;
 	}
 	
 	public static Enemy enemy(){
-		return module(Renderer.class).enemy;
+		return enemy;
 	}
 	
 	public static float angleTo(Entity entity){

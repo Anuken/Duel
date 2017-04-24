@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 import io.anuke.duel.Duel;
 import io.anuke.duel.entities.effect.Laser;
 import io.anuke.duel.modules.Control;
-import io.anuke.duel.modules.Renderer;
 import io.anuke.ucore.util.Timers;
 
 public class Enemy extends Fighter{
@@ -131,6 +130,6 @@ public class Enemy extends Fighter{
 	
 	@Override
 	public void added(){
-		player = Duel.module(Renderer.class).player;
+		player = Duel.player;
 	}
 }

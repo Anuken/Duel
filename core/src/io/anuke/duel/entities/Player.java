@@ -37,8 +37,8 @@ public class Player extends Fighter implements Collidable, Damageable{
 	public void update(){
 		
 		for(int i = 0; i < 4; i ++){
-			int index = i;
-			Attacks attack = attacks[i].attack;
+			//int index = i;
+			//Attacks attack = attacks[i].attack;
 			if(UInput.keyUp("weapon"+(i+1)) && attacks[i].cooldown <= 0){
 				attack(attacks[i].attack);
 				attacks[i].cooldown = attacks[i].attack.cooldown;

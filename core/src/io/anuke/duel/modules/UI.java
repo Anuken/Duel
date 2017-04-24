@@ -15,7 +15,6 @@ import io.anuke.duel.entities.Damageable;
 import io.anuke.duel.entities.Player;
 import io.anuke.duel.entities.Player.AttackInfo;
 import io.anuke.scene.Element;
-import io.anuke.scene.actions.Actions;
 import io.anuke.scene.builders.*;
 import io.anuke.scene.style.Styles;
 import io.anuke.scene.ui.*;
@@ -28,11 +27,14 @@ import io.anuke.ucore.entities.Entity;
 
 public class UI extends SceneModule<Duel>{
 	boolean playing = false;
+	boolean dead = false;
 	BooleanSupplier visible = ()->{return !playing;};
 	BooleanSupplier nvisible = ()->{return playing;};
 	
 	Dialog settings;
+	Dialog restart;
 	Preferences prefs;
+	int battle = 0;
 	
 	public UI(){
 		Styles.load((styles = new Styles(Gdx.files.internal("ui/uiskin.json"))));
@@ -63,7 +65,7 @@ public class UI extends SceneModule<Duel>{
 			prefs.flush();
 		});
 		slider.change();
-		table.add(label).padRight(60).minWidth(230);
+		table.add(label).padRight(60).minWidth(330);
 		table.add(slider);
 		table.addButton("Reset", ()->{
 			slider.setValue(def);
@@ -73,6 +75,14 @@ public class UI extends SceneModule<Duel>{
 	}
 	
 	void setup(){
+		restart = new Dialog("you died.");
+		restart.getTitleLabel().setColor(Color.CORAL);
+		restart.text("Press [YELLOW][[ENTER][WHITE] to restart.");
+		restart.setMovable(false);
+		restart.padTop(restart.getPadTop()-20);
+		restart.getContentTable().pad(50);
+		
+		
 		SceneBuild.begin(scene);
 		
 		settings = new Dialog("Settings");
@@ -128,13 +138,13 @@ public class UI extends SceneModule<Duel>{
 			get().add(new HealthBar(getModule(Renderer.class).player));
 			*/
 			
-			get().add(new HealthBar(getModule(Renderer.class).player));
+			get().add(new HealthBar(Duel.player()));
 			get().add().growX();
 			for(int i = 0; i < 4; i ++){
 				get().add(new AttackIndicator(i)).size(52).align(Align.bottom);
 			}
 			get().add().growX();
-			get().add(new HealthBar(getModule(Renderer.class).enemy));
+			get().add(new HealthBar(Duel.enemy()));
 			get().setVisible(nvisible);
 			row();
 		}};
@@ -149,6 +159,12 @@ public class UI extends SceneModule<Duel>{
 	
 	@Override
 	public void update(){
+		if(Duel.player().health() < 0){
+			if(!dead)
+				restart.show(scene);
+			dead = true;
+			
+		}
 		act();
 	}
 	
@@ -199,8 +215,8 @@ public class UI extends SceneModule<Duel>{
 			Draw.color();
 			
 			if(info.cooldown - Gdx.graphics.getDeltaTime()*60 <= 0 && info.cooldown > 0){
-				setColor(Color.WHITE);
-				addAction(Actions.color(Color.ROYAL, 60f));
+				//setColor(Color.WHITE);
+				//addAction(Actions.color(Color.WHITE, 60f));
 			}
 			
 			
