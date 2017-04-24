@@ -9,13 +9,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.Align;
 
-import io.anuke.SceneModule;
 import io.anuke.duel.Duel;
 import io.anuke.duel.effects.Effects;
 import io.anuke.duel.entities.Damageable;
 import io.anuke.duel.entities.Player;
 import io.anuke.duel.entities.Player.AttackInfo;
 import io.anuke.scene.Element;
+import io.anuke.scene.SceneModule;
 import io.anuke.scene.builders.*;
 import io.anuke.scene.style.Styles;
 import io.anuke.scene.ui.*;
@@ -39,6 +39,7 @@ public class UI extends SceneModule<Duel>{
 	Preferences prefs;
 	int battle = 0;
 	boolean countdown = false;
+	public boolean won = false;
 	
 	public UI(){
 		Styles.load((styles = new Styles(Gdx.files.internal("ui/uiskin.json"))));
@@ -88,7 +89,7 @@ public class UI extends SceneModule<Duel>{
 		
 		restart = new Dialog("you died.");
 		restart.getTitleLabel().setColor(Color.CORAL);
-		restart.text("Press [YELLOW][[ENTER][WHITE] to restart.");
+		restart.text("Press [YELLOW][[SPACE][WHITE] to restart.");
 		restart.setMovable(false);
 		restart.padTop(restart.getPadTop()-20);
 		restart.getContentTable().pad(50);
@@ -161,13 +162,13 @@ public class UI extends SceneModule<Duel>{
 			get().add(new HealthBar(getModule(Renderer.class).player));
 			*/
 			
-			get().add(new HealthBar(Duel.player()));
+			add(new HealthBar(Duel.player()));
 			get().add().growX();
 			for(int i = 0; i < 4; i ++){
 				get().add(new AttackIndicator(i)).size(52).align(Align.bottom);
 			}
 			get().add().growX();
-			get().add(new HealthBar(Duel.enemy()));
+			add(new HealthBar(Duel.enemy()));
 			get().setVisible(nvisible);
 			row();
 		}};
@@ -214,15 +215,18 @@ public class UI extends SceneModule<Duel>{
 		if(Duel.player().health() <= 0 && !dead){
 			restart.show(scene);
 			dead = true;
-			
-			if(UInput.keyDown(Keys.ENTER)){
-				restart();
-			}
 		}
 		
-		if(Duel.enemy.health() <= 0 && !dead){
+		if(dead && UInput.keyDown(Keys.SPACE)){
+			restart();
+		}
+		
+		if(Duel.enemy.health() <= 0 && !won){
 			next.show(scene);
-			dead = true;
+			
+			Duel.enemy().remove();
+			Duel.player().health = Duel.health;
+			won = true;
 		}
 		
 		act();

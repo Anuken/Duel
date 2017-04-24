@@ -22,9 +22,9 @@ public class Duel extends ModuleController<Duel>{
 	
 	@Override
 	public void init(){
-		addModule(Control.class);
-		addModule(Renderer.class);
-		addModule(UI.class);
+		addModule(new Control());
+		addModule(new Renderer());
+		addModule(new UI());
 		
 		player = new Player();
 		enemy = new Enemy();
@@ -34,12 +34,14 @@ public class Duel extends ModuleController<Duel>{
 	
 	public static void restart(){
 		enemy.y = 200;
+		enemy.x = player.x = 0;
 		player.y = -200;
 		
 		enemy.health = health;
 		player.health = health;
 		
 		EntityHandler.instance().entities.clear();
+		EntityHandler.instance().entitiesToAdd.clear();
 		player.add();
 		enemy.add();
 	}

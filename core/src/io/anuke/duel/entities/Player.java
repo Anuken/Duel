@@ -1,6 +1,5 @@
 package io.anuke.duel.entities;
 
-import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.math.Vector2;
 
 import io.anuke.duel.Duel;
@@ -8,9 +7,9 @@ import io.anuke.duel.effects.EffectType;
 import io.anuke.duel.effects.Effects;
 import io.anuke.duel.entities.effect.Bullet;
 import io.anuke.duel.entities.effect.BulletType;
+import io.anuke.duel.modules.UI;
 import io.anuke.ucore.core.Draw;
 import io.anuke.ucore.core.UInput;
-import io.anuke.ucore.util.Angles;
 import io.anuke.ucore.util.Mathf;
 import io.anuke.ucore.util.Timers;
 
@@ -78,7 +77,7 @@ public class Player extends Fighter implements Collidable, Damageable{
 		vector.limit(speed);
 		
 		if(UInput.keyDown("dash")){
-			if(Timers.get(4) && dashspeed > 10)
+			if(Timers.get("dash", 4) && dashspeed > 10)
 				Effects.effect(EffectType.portalwave, this);
 			vector.setLength(dashspeed);
 			dashspeed -= drag;
@@ -93,13 +92,6 @@ public class Player extends Fighter implements Collidable, Damageable{
 		
 		time += vector.x < 0 ? delta()*4 : vector.x > 0 ? -delta()*4 : 0;
 		
-		//x = Mathf.clamp(x, -bounds, bounds);
-		//y = Mathf.clamp(y, -bounds, bounds);
-		
-		if(UInput.buttonUp(Buttons.LEFT)){
-			new Bullet(this, BulletType.test, Angles.mouseAngle(x, y)).add();
-		}
-		
 	}
 	
 	public class AttackInfo{
@@ -110,6 +102,12 @@ public class Player extends Fighter implements Collidable, Damageable{
 		public AttackInfo(Attacks attack){
 			this.attack = attack;
 		}
+	}
+	
+	@Override
+	public void damage(int amount){
+		if(!Duel.module(UI.class).won)
+			super.damage(amount);
 	}
 	
 	Enemy enemy(){

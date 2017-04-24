@@ -54,7 +54,6 @@ public abstract class Fighter extends Entity implements Collidable, Damageable{
 	public void damage(int amount){
 		health -= amount;
 		hit = hittime;
-		
 	}
 
 	@Override

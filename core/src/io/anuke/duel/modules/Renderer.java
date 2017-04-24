@@ -9,7 +9,6 @@ import io.anuke.duel.Duel;
 import io.anuke.duel.effects.Overlay;
 import io.anuke.duel.entities.Collidable;
 import io.anuke.duel.entities.Damageable;
-import io.anuke.gif.GifRecorder;
 import io.anuke.ucore.core.Draw;
 import io.anuke.ucore.entities.Entity;
 import io.anuke.ucore.entities.EntityHandler;
@@ -19,7 +18,7 @@ import io.anuke.ucore.util.Mathf;
 
 public class Renderer extends RendererModule<Duel>{
 	private boolean debug = false;
-	private GifRecorder recorder = new GifRecorder(batch);
+	//private GifRecorder recorder = new GifRecorder(batch);
 	private Array<Overlay> removal = new Array<Overlay>();
 	private UI ui;
 	
@@ -102,7 +101,7 @@ public class Renderer extends RendererModule<Duel>{
 		
 		endPixel();
 		
-		recorder.update();
+		//recorder.update();
 		
 		font.getData().setScale(1f);
 		batch.begin();
