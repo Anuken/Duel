@@ -30,7 +30,7 @@ public class Player extends Fighter implements Collidable, Damageable{
 		
 		attacks[1] = new AttackInfo(Attacks.lock);
 		attacks[2] = new AttackInfo(Attacks.mark);
-		attacks[3] = new AttackInfo(Attacks.portal);
+		attacks[3] = new AttackInfo(Attacks.cannon);
 	}
 	
 	public void update(){

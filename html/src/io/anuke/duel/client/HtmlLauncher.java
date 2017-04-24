@@ -11,8 +11,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import io.anuke.duel.Duel;
 
 public class HtmlLauncher extends GwtApplication {
-    static final int WIDTH = 480;
-    static final int HEIGHT = 320;
+    static final int WIDTH = 800;
+    static final int HEIGHT = 600;
     static HtmlLauncher instance;
 
     @Override
@@ -36,7 +36,7 @@ public class HtmlLauncher extends GwtApplication {
     @Override
     public ApplicationListener createApplicationListener() {
         instance = this;
-        setLogLevel(LOG_ERROR);
+        setLogLevel(LOG_NONE);
         setLoadingListener(new LoadingListener() {
             @Override
             public void beforeSetup() {

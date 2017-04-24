@@ -47,9 +47,11 @@ public class Control extends Module<Duel>{
 	public void update(){
 		Timers.update(delta());
 		
+		if(getModule(UI.class).dead) return;
+		
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE))
 			Gdx.app.exit();
-
+		
 		collided.clear();
 		
 		tree.clear();

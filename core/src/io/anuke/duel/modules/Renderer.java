@@ -24,6 +24,7 @@ public class Renderer extends RendererModule<Duel>{
 	private UI ui;
 	private Music[] music = {music("1"), music("2"), music("3"), music("4"), music("5"), music("6")};
 	private Music playing;
+	private float minvol = 0.2f;
 	
 	public Array<Overlay> overlays = new Array<>();
 	public float shakeintensity, shaketime;
@@ -42,19 +43,15 @@ public class Renderer extends RendererModule<Duel>{
 		
 		for(Music m : music)
 			m.setOnCompletionListener(other->{
-				Music temp;
-				do{
-					temp = music[Mathf.random(music.length-1)];
-				}while(temp != playing);
-				
-				playing = temp;
+				while(playing != other)
+				playing = music[Mathf.random(music.length-1)];
 				playing.play();
-				playing.setVolume(0.2f);
+				playing.setVolume(minvol*vol());
 			});
 		
 		playing = music[Mathf.random(music.length-1)];
 		playing.play();
-		playing.setVolume(0.2f);
+		playing.setVolume(minvol*vol());
 	}
 	
 	Music music(String name){
@@ -65,13 +62,18 @@ public class Renderer extends RendererModule<Duel>{
 		ui = getModule(UI.class);
 	}
 	
+	
+	float vol(){
+		return ui == null ? 1f : ui.getPrefs().getInteger("volume", 5)/5f;
+	}
+	
 	@Override
 	public void update(){
 		if(!ui.playing || ui.dead){
-			playing.setVolume(0.2f);
+			playing.setVolume(minvol*vol());
 			return;
 		}
-		playing.setVolume(1f);
+		playing.setVolume(vol());
 		
 		EntityHandler.instance().update(ui.countdown);
 		
@@ -81,7 +83,7 @@ public class Renderer extends RendererModule<Duel>{
 		
 		camera.position.set(0, 0, 0);
 		if(shaketime > 0){
-			float shakeintensity = this.shakeintensity*getModule(UI.class).getPrefs().getInteger("screenshake", 4)/4f;
+			float shakeintensity = this.shakeintensity*ui.getPrefs().getInteger("screenshake", 4)/4f;
 			camera.position.add(Mathf.random(-shakeintensity, shakeintensity), Mathf.random(-shakeintensity, shakeintensity), 0);
 			shaketime -= delta();
 			this.shakeintensity -= 0.1f;

@@ -8,7 +8,7 @@
   			  <script src="soundmanager2-jsmin.js"></script>
        </head>
 
-       <body onkeydown="preventUseOfDefaultKeys(event);" >
+       <body onkeydown="preventUseOfDefaultKeys(event);">
               <div align="center" id="embed-html"></div>
               <script type="text/javascript" src="html/html.nocache.js"></script>
        </body>
@@ -18,6 +18,7 @@
                 evt.preventDefault();
                 evt.stopPropagation();
                 evt.target.style.cursor = 'default';
+                window.focus(); 
               }
 
               function handleMouseUp(evt) {
@@ -25,13 +26,15 @@
                 evt.stopPropagation();
                 evt.target.style.cursor = '';
               }
-              document.getElementById('embed-html').addEventListener('mousedown', handleMouseDown, false);
-              document.getElementById('embed-html').addEventListener('mouseup', handleMouseUp, false);
+              
               
               function preventUseOfDefaultKeys(event) {
-    				if([32, 37, 38, 39, 40].indexOf(evt.keyCode) > -1)) {
-        				event.preventDefault();
-    				}
-				}
+          		 if (event.keyCode == 32 || event.keyCode == 27 || event.keyCode == 38 || event.keyCode == 37 || event.keyCode == 39 || event.keyCode == 40) {
+          	      event.preventDefault();
+           		 }
+         	  }
+         	  
+         	  document.getElementById('embed-html').addEventListener('mousedown', handleMouseDown, false);
+              document.getElementById('embed-html').addEventListener('mouseup', handleMouseUp, false);
        </script>
 </html>

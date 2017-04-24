@@ -17,26 +17,45 @@ public class Enemy extends Fighter{
 	float time;
 	
 	void combat(){
-		if(rand(0.04)){
+		
+		
+		if(rand(0.08)){
 			attack(Attacks.cannon);
 		}
 		
+		if(rand(0.02)){
+			attack(Attacks.lock);
+		}
+		
+		if(rand(0.008)){
+			attack(Attacks.shot);
+		}
+		
+		if(Duel.battle > 1)
 		if(rand(0.01)){
 			attack(Attacks.tricannon);
 		}
 		
+		
+		if(Duel.battle > 2)
 		if(rand(0.01)){
 			attack(Attacks.mark);
 		}
 		
+		
+		if(Duel.battle > 2)
 		if(rand(0.001)){
 			attack(Attacks.laserballs);
 		}
 		
+		
+		if(Duel.battle > 3)
 		if(rand(0.001)){
 			attack(Attacks.split);
 		}
 		
+		
+		if(Duel.battle > 2)
 		if(rand(0.002)){
 			for(int i = 0; i < 3; i ++){
 				Timers.run(i*8, ()->{
@@ -45,6 +64,8 @@ public class Enemy extends Fighter{
 			}
 		}
 		
+		
+		if(Duel.battle > 3)
 		if(rand(0.002)){
 			for(int i = 0; i < 5; i ++){
 				Timers.run(i*10, ()->{
@@ -53,7 +74,8 @@ public class Enemy extends Fighter{
 			}
 		}
 		
-		if(rand(0.001)){
+		if(Duel.battle > 4)
+		if(rand(0.002)){
 			for(int i = 0; i < 5; i ++){
 				Timers.run(i*15, ()->{
 					attack(Attacks.lock);
@@ -63,6 +85,7 @@ public class Enemy extends Fighter{
 			standtime = 70;
 		}
 		
+		if(Duel.battle > 2)
 		if(rand(0.002)){
 			for(int i = 0; i < 7; i ++){
 				Timers.run(i*10, ()->{
@@ -71,14 +94,18 @@ public class Enemy extends Fighter{
 			}
 		}
 		
-		if(rand(0.02) && Duel.module(Control.class).getNear(x, y, 100) > 60){
+		if(Duel.battle > 4)
+		if(rand(0.04) && Duel.module(Control.class).getNear(x, y, 100) > 60){
 			attack(Attacks.reverseshield);
 		}
 		
-		if(rand(0.003)){
+		if(Duel.battle > 4)
+		if(rand(0.004)){
 			attack(Attacks.portal);
 		}
 		
+		
+		if(Duel.battle > 3)
 		if(rand(0.002)){
 			for(int i = 0; i < 5; i ++){
 				Timers.run(i*12, ()->{

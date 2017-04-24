@@ -12,7 +12,7 @@ import io.anuke.ucore.util.Mathf;
 import io.anuke.ucore.util.Timers;
 
 public enum Attacks{
-	swarm(100, "Shoots a swarm of seeking bullets."){
+	swarm(30, "Shoots a swarm of seeking bullets."){
 		void impl(){
 			for(int i = 0; i < 15; i ++)
 				shoot(BulletType.swarm, Mathf.random(360f));
@@ -20,7 +20,7 @@ public enum Attacks{
 			Effects.effect(EffectType.rspark, entity);
 		}
 	}, 
-	cannon(10, "Shoots a powerful fast-moving bullet."){
+	cannon(5, "Shoots a powerful fast-moving bullet."){
 		void impl(){
 			
 			Effects.effect(EffectType.inspike, entity);

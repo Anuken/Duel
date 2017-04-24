@@ -12,9 +12,11 @@ import com.badlogic.gdx.utils.Align;
 import io.anuke.duel.Duel;
 import io.anuke.duel.effects.Effects;
 import io.anuke.duel.entities.Damageable;
+import io.anuke.duel.entities.Enemy;
 import io.anuke.duel.entities.Player;
 import io.anuke.duel.entities.Player.AttackInfo;
 import io.anuke.scene.Element;
+import io.anuke.scene.Scene;
 import io.anuke.scene.SceneModule;
 import io.anuke.scene.builders.*;
 import io.anuke.scene.style.Styles;
@@ -38,7 +40,6 @@ public class UI extends SceneModule<Duel>{
 	Dialog next;
 	Dialog info;
 	Preferences prefs;
-	int battle = 0;
 	boolean played = false;
 	boolean countdown = false;
 	public boolean won = false;
@@ -53,6 +54,10 @@ public class UI extends SceneModule<Duel>{
 		setup();
 		addPref("Screen Shake", 4, 0, 16, i->{
 			return (float)(i/4f) + "x";
+		});
+		
+		addPref("Volume", 5, 0, 10, i->{
+			return (int)(i/5f*100) + "%";
 		});
 	}
 	
@@ -103,11 +108,33 @@ public class UI extends SceneModule<Duel>{
 		info.setMovable(false);
 		info.key(Keys.SPACE, true);
 		
-		next = new Dialog("victory!");
+		next = new Dialog("victory!"){
+			public Dialog show(Scene scene){
+				super.show(scene);
+				getContentTable().clearChildren();
+				
+				text("Select a loadout.").colspan(4);
+				getContentTable().row();
+				
+				for(int i = 0; i < 4; i++){
+					getContentTable().add(new AttackIndicator(i)).size(52);
+				}
+				pack();
+				setPosition(Math.round((getStage().getWidth() - getWidth()) / 2), Math.round((getStage().getHeight() - getHeight()) / 2));
+				return this;
+			}
+		};
 		next.getTitleLabel().setColor(Color.CORAL);
 		next.padTop(next.getPadTop()-20);
 		next.getContentTable().pad(50);
-		next.text("Select a loadout.");
+		
+		next.getButtonTable().addButton("Go", ()->{
+			
+			next.hide();
+			restart();
+			
+			won = false;
+		}).pad(5);
 		next.setMovable(false);
 		
 		restart = new Dialog("you died.");
@@ -224,15 +251,20 @@ public class UI extends SceneModule<Duel>{
 		});
 		
 		Effects.overlay(time, f->{
-			Draw.tscl(2f);
-			Draw.text((int)((time-f)/(time/5)) + "", 0, 0);
-			Draw.tscl(1f);
 			
 			Draw.color(Color.ROYAL);
 			Draw.thickness(8f);
 			Draw.spike(0, -20, 70, 200, 10, Timers.time()/2f);
 			Draw.color();
 			Draw.thickness(1f);
+			
+			Draw.tscl(2f);
+			Draw.tcolor(Color.ORANGE);
+			Draw.text("Battle " + Duel.battle, 0, 60);
+			Draw.tcolor();
+			Draw.text((int)((time-f)/(time/5)) + "", 0, 0);
+			
+			Draw.tscl(1f);
 		});
 	}
 	
@@ -252,13 +284,18 @@ public class UI extends SceneModule<Duel>{
 		
 		if(Duel.enemy.health() <= 0 && !won){
 			next.show(scene);
-			
+			nextBattle();
 			Duel.enemy().remove();
-			Duel.player().health = Duel.health;
 			won = true;
+			
 		}
 		
 		act();
+	}
+	
+	void nextBattle(){
+		Duel.battle ++;
+		Duel.health += 500;
 	}
 	
 	@Override
@@ -294,7 +331,12 @@ public class UI extends SceneModule<Duel>{
 		
 		public AttackIndicator(int index){
 			this.index = index;
-			Tooltip tool = new Tooltip((text = new Label("WOW")));
+			text = new Label("WOW");
+			Table table = new Table();
+			table.add(text);
+			table.pad(9);
+			table.background("button");
+			Tooltip tool = new Tooltip(table);
 			tool.setInstant(true);
 			TooltipManager.getInstance().animations = false;
 			TooltipManager.getInstance().initialTime = 0;
@@ -302,16 +344,12 @@ public class UI extends SceneModule<Duel>{
 			addListener(new HandCursorListener());
 			
 			Styles.styles.getFont("default-font").getData().setScale(0.75f);
-			//text.setFontScale(0.75f);
-			//text.setWrap(true);
 			
 			setColor(Color.ROYAL);
 		}
 		
 		public void draw(Batch batch, float alpha){
 			AttackInfo info = Duel.player().attacks[index];
-			
-			//Styles.styles.getDrawable("button").draw(batch, getX(), getY(), getWidth(), getHeight());
 			
 			text.setText("[ORANGE]Attack: [GREEN]\"" + info.attack.name()  
 			+"\"\n[WHITE]" + info.attack.desc 
@@ -324,22 +362,6 @@ public class UI extends SceneModule<Duel>{
 			Draw.crect(info.attack.icon, getX()+4, getY()+4, getWidth()-8, getHeight()-8);
 			Draw.thickness(1);
 			Draw.color();
-			
-			if(info.cooldown - Gdx.graphics.getDeltaTime()*60 <= 0 && info.cooldown > 0){
-				//setColor(Color.WHITE);
-				//addAction(Actions.color(Color.WHITE, 60f));
-			}
-			
-			
-			/*
-			Draw.color(0, 0, 0, 0.1f);
-			Draw.crect("white", getX()+4, getY()+4, getWidth()-8, (getHeight()-8)*(info.cooldown/(float)info.attack.cooldown));
-			Draw.color();
-			
-			DrawContext.font.getData().setScale(1f);
-			Draw.text(info.charges + "", getX(), getY()+getHeight(), Align.left);
-			Draw.tcolor();
-			*/
 		}
 	}
 	
@@ -361,7 +383,8 @@ public class UI extends SceneModule<Duel>{
 			Draw.thickness(4);
 			Draw.linerect(getX(), getY(), getWidth(), getHeight());
 			
-			Styles.styles.getDrawable("white").draw(batch, getX(), getY(), getWidth(),( (float)health/Duel.health)*getHeight());
+			Styles.styles.getDrawable("white").draw(batch, getX(), getY(), getWidth(),
+					((float)health/Duel.health)*getHeight() * (entity instanceof Enemy ? (1/1.5f) : 1f));
 			//Styles.styles.getDrawable("white").draw(batch, getX(), getY(), ( (float)health/Duel.health)*getWidth(), getHeight());
 			
 			Draw.thickness(1f);

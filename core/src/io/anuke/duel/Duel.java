@@ -16,7 +16,8 @@ public class Duel extends ModuleController<Duel>{
 	public static Player player;
 	public static Enemy enemy;
 	
-	public static final int health = 1000;
+	public static int battle = 1;
+	public static int health = 1000;
 	public static final Color ecolor = Color.ORANGE;
 	public static final Color pcolor = Color.ROYAL;
 	
@@ -37,7 +38,7 @@ public class Duel extends ModuleController<Duel>{
 		enemy.x = player.x = 0;
 		player.y = -200;
 		
-		enemy.health = health;
+		enemy.health = (int)(health*1.5f);
 		player.health = health;
 		
 		EntityHandler.instance().entities.clear();
