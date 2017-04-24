@@ -1,6 +1,7 @@
 package io.anuke.duel.entities;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
 import io.anuke.duel.Duel;
 import io.anuke.duel.effects.EffectType;
@@ -21,6 +22,7 @@ public class Player extends Fighter implements Collidable, Damageable{
 	public AttackInfo[] attacks = new AttackInfo[4];
 	public int maxmana = 500;
 	public int regen = 3;
+	public Array<Attacks> allattacks = new Array<>();
 	
 	public Player(){
 		speed = 9f;

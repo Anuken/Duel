@@ -7,27 +7,33 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 
 import io.anuke.duel.Duel;
 import io.anuke.duel.effects.Effects;
-import io.anuke.duel.entities.Damageable;
-import io.anuke.duel.entities.Enemy;
-import io.anuke.duel.entities.Player;
+import io.anuke.duel.entities.*;
 import io.anuke.duel.entities.Player.AttackInfo;
 import io.anuke.scene.Element;
 import io.anuke.scene.Scene;
 import io.anuke.scene.SceneModule;
 import io.anuke.scene.builders.*;
+import io.anuke.scene.event.InputEvent;
 import io.anuke.scene.style.Styles;
 import io.anuke.scene.ui.*;
 import io.anuke.scene.ui.layout.Table;
 import io.anuke.scene.utils.CursorManager;
+import io.anuke.scene.utils.DragAndDrop;
+import io.anuke.scene.utils.DragAndDrop.Payload;
+import io.anuke.scene.utils.DragAndDrop.Source;
+import io.anuke.scene.utils.DragAndDrop.Target;
 import io.anuke.scene.utils.HandCursorListener;
 import io.anuke.ucore.core.Draw;
 import io.anuke.ucore.core.KeyBinds;
 import io.anuke.ucore.core.UInput;
 import io.anuke.ucore.entities.Entity;
+import io.anuke.ucore.util.Mathf;
 import io.anuke.ucore.util.Timers;
 
 public class UI extends SceneModule<Duel>{
@@ -39,13 +45,17 @@ public class UI extends SceneModule<Duel>{
 	Dialog restart;
 	Dialog next;
 	Dialog info;
+	AttackIndicator[] indicators = new AttackIndicator[4];
+	Table selectable;
 	Preferences prefs;
-	boolean played = false;
+	boolean played = true; //TODO put this back
 	boolean countdown = false;
 	public boolean won = false;
 	
 	public UI(){
 		Styles.load((styles = new Styles(Gdx.files.internal("ui/uiskin.json"))));
+		Styles.styles.getFont("default-font").getData().setScale(0.75f);
+		Styles.styles.getFont("default-font").setUseIntegerPositions(false);
 		prefs = Gdx.app.getPreferences("io.anuke.duel");
 	}
 	
@@ -86,7 +96,79 @@ public class UI extends SceneModule<Duel>{
 		table.row();
 	}
 	
+	void updateAttacks(){
+		Array<Attacks> available = Duel.player.allattacks;
+		DragAndDrop dragAndDrop = new DragAndDrop();
+		
+		int w = 5;
+		int height = (int)((float)available.size/w+1);
+		
+		selectable.clear();
+		for(int y = 0; y < height; y ++){
+			for(int x = 0; x < w; x ++){
+				int index = y*w + x;
+				
+				if(index >= available.size){
+					selectable.add();
+				}else{
+					AttackSlot info = new AttackSlot(available.get(index), index);
+					selectable.add(info).size(48).pad(8);
+					if(index == available.size-1)
+						info.isnew = true;
+					
+					dragAndDrop.addSource(new Source(info) {
+						public Payload dragStart (InputEvent event, float x, float y, int pointer) {
+							Payload payload = new Payload();
+							payload.setObject(info);
+				
+							
+							Table table = new Table();
+							table.background("button");
+							table.pad(9);
+							table.add(new Label("[YELLOW]"+info.attack.name()));
+							table.pack();
+							
+							payload.setDragActor(table);
+							return payload;
+						}
+					});
+				}
+			}
+			selectable.row();
+		}
+		
+		for(int i = 0; i < 4; i ++){
+			dragAndDrop.addTarget(new Target(indicators[i]) {
+				public boolean drag (Source source, Payload payload, float x, float y, int pointer) {
+					getActor().setColor(Color.PURPLE);
+					return true;
+				}
+
+				public void reset (Source source, Payload payload) {
+					getActor().setColor(Color.ROYAL);
+				}
+
+				public void drop (Source source, Payload payload, float x, float y, int pointer) {
+					AttackSlot slot = (AttackSlot)payload.getObject();
+					int index = slot.index;
+					int toindex = ((AttackIndicator)getActor()).index;
+					AttackInfo info = Duel.player.attacks[toindex];
+					Attacks attack = slot.attack;
+					
+					
+					Duel.player.allattacks.set(index, info.attack);
+					slot.attack = info.attack;
+					Duel.player.attacks[toindex].attack = attack;
+					slot.isnew = false;
+				}
+			});
+		}
+		next.pack();
+		
+	}
+	
 	void setup(){
+		
 		info = new Dialog("info"){
 			protected void result(Object o){
 				play();
@@ -111,15 +193,7 @@ public class UI extends SceneModule<Duel>{
 		next = new Dialog("victory!"){
 			public Dialog show(Scene scene){
 				super.show(scene);
-				getContentTable().clearChildren();
-				
-				text("Select a loadout.").colspan(4);
-				getContentTable().row();
-				
-				for(int i = 0; i < 4; i++){
-					getContentTable().add(new AttackIndicator(i)).size(52);
-				}
-				pack();
+				updateAttacks();
 				setPosition(Math.round((getStage().getWidth() - getWidth()) / 2), Math.round((getStage().getHeight() - getHeight()) / 2));
 				return this;
 			}
@@ -127,15 +201,41 @@ public class UI extends SceneModule<Duel>{
 		next.getTitleLabel().setColor(Color.CORAL);
 		next.padTop(next.getPadTop()-20);
 		next.getContentTable().pad(50);
+		next.getContentTable().padBottom(20);
 		
-		next.getButtonTable().addButton("Go", ()->{
+		next.getButtonTable().addButton("Next Battle", ()->{
 			
 			next.hide();
 			restart();
 			
 			won = false;
 		}).pad(5);
+		
 		next.setMovable(false);
+		
+		for(int i = 0; i < 4; i ++)
+			indicators[i] = new AttackIndicator(i);
+		
+		
+		selectable = new Table();
+		
+		TooltipManager.getInstance().animations = false;
+		TooltipManager.getInstance().initialTime = 0;
+		
+		Table atable = new Table();
+		for(int i = 0; i < 4; i ++){
+			atable.add(indicators[i]).size(48);
+		}
+		
+		next.text("Select a loadout.");
+		next.getContentTable().row();
+		next.getContentTable().add(selectable);
+		next.getContentTable().row();
+		next.getContentTable().add(atable).padTop(30);
+		next.pack();
+		//end
+		
+		//this runs each time the player wins
 		
 		restart = new Dialog("you died.");
 		restart.getTitleLabel().setColor(Color.CORAL);
@@ -283,8 +383,8 @@ public class UI extends SceneModule<Duel>{
 		}
 		
 		if(Duel.enemy.health() <= 0 && !won){
-			next.show(scene);
 			nextBattle();
+			next.show(scene);
 			Duel.enemy().remove();
 			won = true;
 			
@@ -296,6 +396,7 @@ public class UI extends SceneModule<Duel>{
 	void nextBattle(){
 		Duel.battle ++;
 		Duel.health += 500;
+		Duel.player.allattacks.add(Attacks.values()[Mathf.random(Attacks.values().length-1)]);
 	}
 	
 	@Override
@@ -325,6 +426,58 @@ public class UI extends SceneModule<Duel>{
 		}
 	}
 	
+	class AttackSlot extends Element{
+		Attacks attack;
+		Label text;
+		int index;
+		boolean isnew;
+		
+		public AttackSlot(Attacks attack, int idx){
+			this.attack = attack;
+			this.index = idx;
+			
+			text = new Label("you should not see this text");
+			text.setFontScale(0.5f);
+			Table table = new Table();
+			table.background("button");
+			table.pad(9);
+			table.add(text);
+			
+			Tooltip tool = new Tooltip(table);
+			tool.setInstant(true);
+			
+			addListener(tool);
+			addListener(new HandCursorListener());
+		}
+		
+		public void draw(Batch batch, float alpha){
+			
+			text.setText("[ORANGE]Attack: [GREEN]\"" + attack.name()  
+			+"\"\n[WHITE]" + attack.desc 
+			+ "\n[YELLOW]Drag to attack bar to assign.");
+			
+			Draw.color(Color.ROYAL);
+			Draw.thickness(4);
+			Draw.alpha(alpha);
+			Draw.linerect(getX(), getY(), getWidth(), getHeight());
+			Draw.crect(attack.icon, getX()+4, getY()+4, getWidth()-8, getHeight()-8);
+			Draw.thickness(1);
+			Draw.color();
+			
+			if(isnew){
+				BitmapFont font = Styles.styles.getFont("default-font");
+				
+				//Styles.styles.getDrawable("button").draw(batch, getX(), getY() + getHeight()-24, 60, 24);
+				
+				font.setColor(0, 1, 0, alpha);
+				font.getData().setScale(0.5f);
+				font.draw(batch, "new!", getX()+4, getY() + getHeight()-6);
+				font.getData().setScale(0.75f);
+				font.setColor(Color.WHITE);
+			}
+		}
+	}
+	
 	class AttackIndicator extends Element{
 		int index;
 		Label text;
@@ -332,6 +485,7 @@ public class UI extends SceneModule<Duel>{
 		public AttackIndicator(int index){
 			this.index = index;
 			text = new Label("WOW");
+			text.setFontScale(0.5f);
 			Table table = new Table();
 			table.add(text);
 			table.pad(9);
@@ -342,8 +496,6 @@ public class UI extends SceneModule<Duel>{
 			TooltipManager.getInstance().initialTime = 0;
 			addListener(tool);
 			addListener(new HandCursorListener());
-			
-			Styles.styles.getFont("default-font").getData().setScale(0.75f);
 			
 			setColor(Color.ROYAL);
 		}
@@ -357,8 +509,10 @@ public class UI extends SceneModule<Duel>{
 			
 			Draw.color(getColor());
 			Draw.thickness(4);
+			Draw.alpha(alpha);
 			Draw.linerect(getX(), getY(), getWidth(), getHeight());
 			if(info.cooldown <= 0) Draw.color(Color.ORANGE);
+			Draw.alpha(alpha);
 			Draw.crect(info.attack.icon, getX()+4, getY()+4, getWidth()-8, getHeight()-8);
 			Draw.thickness(1);
 			Draw.color();
