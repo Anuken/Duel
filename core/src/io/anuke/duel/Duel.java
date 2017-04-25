@@ -38,7 +38,7 @@ public class Duel extends ModuleController<Duel>{
 		enemy.x = player.x = 0;
 		player.y = -200;
 		
-		enemy.health = (int)(health*1.5f);
+		enemy.health = (int)(health);
 		player.health = health;
 		
 		EntityHandler.instance().entities.clear();

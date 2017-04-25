@@ -22,35 +22,30 @@ public class Enemy extends Fighter{
 			attack(Attacks.cannon);
 		}
 		
-		if(Duel.battle > 7)
-		if(rand(0.09)){
-			attack(Attacks.cannon);
-		}
-		
 		if(Duel.battle > 8)
 		if(rand(0.0008)){
 			attack(Attacks.lasercannon);
 		}
 		
-		if(rand(0.03)){
+		if(rand(0.02)){
 			attack(Attacks.lock);
 		}
 		
-		if(rand(0.009)){
+		if(rand(0.008)){
 			attack(Attacks.shot);
 		}
 		
-		if(rand(0.01)){
+		if(rand(0.008)){
 			attack(Attacks.multishot);
 		}
 		
 		if(Duel.battle > 2)
-		if(rand(0.004)){
+		if(rand(0.003)){
 			attack(Attacks.shadow);
 		}
 		
 		if(Duel.battle > 1)
-		if(rand(0.01)){
+		if(rand(0.008)){
 			attack(Attacks.tricannon);
 		}
 		
@@ -104,7 +99,7 @@ public class Enemy extends Fighter{
 		}
 		
 		if(Duel.battle > 2)
-		if(rand(0.002)){
+		if(rand(0.001)){
 			for(int i = 0; i < 7; i ++){
 				Timers.run(i*10, ()->{
 					attack(Attacks.tricannon);
@@ -123,7 +118,7 @@ public class Enemy extends Fighter{
 		}
 		
 		if(Duel.battle > 5)
-		if(rand(0.004)){
+		if(rand(0.002)){
 			attack(Attacks.megaportal);
 		}
 		
@@ -133,7 +128,7 @@ public class Enemy extends Fighter{
 		}
 		
 		if(Duel.battle > 7)
-		if(rand(0.003)){
+		if(rand(0.002)){
 			attack(Attacks.lasersphere);
 		}
 		
@@ -143,7 +138,7 @@ public class Enemy extends Fighter{
 			}
 		
 		if(Duel.battle > 6)
-		if(rand(0.004)){
+		if(rand(0.002)){
 			attack(Attacks.laserballs);
 		}
 		
@@ -194,7 +189,7 @@ public class Enemy extends Fighter{
 	}
 	
 	boolean rand(double d){
-		return Math.random()<d*delta()*(1f+(Duel.battle-1f)/16f);
+		return Math.random()<d*delta()*(1f+(Duel.battle-1f)/30f);
 	}
 	
 	@Override

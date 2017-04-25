@@ -33,6 +33,7 @@ import io.anuke.ucore.core.Draw;
 import io.anuke.ucore.core.KeyBinds;
 import io.anuke.ucore.core.UInput;
 import io.anuke.ucore.entities.Entity;
+import io.anuke.ucore.entities.EntityHandler;
 import io.anuke.ucore.util.Mathf;
 import io.anuke.ucore.util.Timers;
 
@@ -393,7 +394,8 @@ public class UI extends SceneModule<Duel>{
 			nextBattle();
 			next.getTitleLabel().setText("Victory!");
 			next.show(scene);
-			Duel.enemy().remove();
+			EntityHandler.instance().entities.clear();
+			EntityHandler.instance().entitiesToAdd.clear();
 			won = true;
 			
 		}
@@ -403,7 +405,7 @@ public class UI extends SceneModule<Duel>{
 	
 	void nextBattle(){
 		Duel.battle ++;
-		Duel.health += 500;
+		Duel.health += 400;
 		Duel.player.allattacks.add(Attacks.values()[Mathf.random(Attacks.values().length-1)]);
 	}
 	
@@ -547,7 +549,7 @@ public class UI extends SceneModule<Duel>{
 			Draw.linerect(getX(), getY(), getWidth(), getHeight());
 			
 			Styles.styles.getDrawable("white").draw(batch, getX(), getY(), getWidth(),
-					((float)health/Duel.health)*getHeight() * (entity instanceof Enemy ? (1/1.5f) : 1f));
+					((float)health/Duel.health)*getHeight() * (entity instanceof Enemy ? (1) : 1f));
 			//Styles.styles.getDrawable("white").draw(batch, getX(), getY(), ( (float)health/Duel.health)*getWidth(), getHeight());
 			
 			Draw.thickness(1f);
