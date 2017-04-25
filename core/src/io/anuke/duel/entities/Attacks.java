@@ -12,9 +12,9 @@ import io.anuke.ucore.util.Mathf;
 import io.anuke.ucore.util.Timers;
 
 public enum Attacks{
-	swarm(50, "Shoots a swarm of seeking bullets."){
+	swarm(40, "Shoots a swarm of seeking bullets."){
 		void impl(){
-			for(int i = 0; i < 15; i ++)
+			for(int i = 0; i < 30; i ++)
 				shoot(BulletType.swarm, Mathf.random(360f));
 			
 			Effects.effect(EffectType.rspark, entity);
@@ -41,7 +41,7 @@ public enum Attacks{
 			}
 		}
 	},
-	mark(100, "Shoots multiple fast-moving bullets in sequence."){
+	mark(100, "Shoots multiple fast-moving bullets in a circle."){
 		void impl(){
 			
 			Effects.effect(EffectType.inspike, entity);
@@ -109,7 +109,7 @@ public enum Attacks{
 			}
 		}
 	},
-	portal(110, "Opens a portal that targets the enemy."){
+	portal(120, "Opens a portal that targets the enemy."){
 		void impl(){
 			vector.setToRandomDirection().setLength(30);
 			
@@ -119,12 +119,12 @@ public enum Attacks{
 			}
 		}
 	}, 
-	megaportal(160, "Opens a large portal that targets the enemy."){
+	megaportal(200, "Opens a large portal that targets the enemy."){
 		void impl(){
 			new MegaPortal(entity).set(x+vector.x, y+vector.y).add();
 		}
 	},
-	laserportal(210, "Opens a laser portal that targets the enemy."){
+	laserportal(310, "alasersphere", "Opens a laser portal that targets the enemy."){
 		void impl(){
 			new LaserPortal(entity).set(x+vector.x, y+vector.y).add();
 		}
@@ -183,7 +183,7 @@ public enum Attacks{
 			}
 		}
 	},
-	lasercannon(160, "Shoots many lasers in a burst."){
+	lasercannon(220, "Shoots many lasers in a burst."){
 		void impl(){
 			for(int i = 0; i < 25; i ++){
 				Timers.run(i*3, ()->{
@@ -193,7 +193,7 @@ public enum Attacks{
 			}
 		}
 	},
-	lasersphere(230, "Shoots lasers in a circular pattern."){
+	lasersphere(250, "Shoots lasers in a circular pattern."){
 		void impl(){
 			int lasers = 15;
 			vector.set(0, 1);

@@ -22,7 +22,7 @@ public class Renderer extends RendererModule<Duel>{
 	//private GifRecorder recorder = new GifRecorder(batch);
 	private Array<Overlay> removal = new Array<Overlay>();
 	private UI ui;
-	private Music[] music = {music("1"), music("2"), music("3"), music("4"), music("5"), music("6")};
+	private Music[] music = {music("1"), music("2"), music("3"), music("4"), music("5")};
 	private Music playing;
 	private float minvol = 0.2f;
 	
@@ -75,7 +75,7 @@ public class Renderer extends RendererModule<Duel>{
 		}
 		playing.setVolume(vol());
 		
-		EntityHandler.instance().update(ui.countdown);
+		EntityHandler.instance().update(ui.countdown && ui.next.getStage() == null);
 		
 		for(Entity e : EntityHandler.instance().getEntities()){
 			clampBounds(e);

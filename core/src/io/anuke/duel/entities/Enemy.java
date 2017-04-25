@@ -128,7 +128,7 @@ public class Enemy extends Fighter{
 		}
 		
 		if(Duel.battle > 6)
-		if(rand(0.002)){
+		if(rand(0.001)){
 			attack(Attacks.laserportal);
 		}
 		

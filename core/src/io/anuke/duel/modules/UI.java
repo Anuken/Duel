@@ -43,7 +43,7 @@ public class UI extends SceneModule<Duel>{
 	BooleanSupplier nvisible = ()->{return playing;};
 	Dialog settings;
 	Dialog restart;
-	Dialog next;
+	public Dialog next;
 	Dialog info;
 	AttackIndicator[] indicators = new AttackIndicator[4];
 	Table selectable;
@@ -113,7 +113,7 @@ public class UI extends SceneModule<Duel>{
 				}else{
 					AttackSlot info = new AttackSlot(available.get(index), index);
 					selectable.add(info).size(48).pad(8);
-					if(index == available.size-1)
+					if(index == available.size-1 && next.getTitleLabel().getText().toString().equals("Victory!"))
 						info.isnew = true;
 					
 					dragAndDrop.addSource(new Source(info) {
@@ -190,7 +190,7 @@ public class UI extends SceneModule<Duel>{
 		info.setMovable(false);
 		info.key(Keys.SPACE, true);
 		
-		next = new Dialog("victory!"){
+		next = new Dialog("Victory!"){
 			public Dialog show(Scene scene){
 				super.show(scene);
 				updateAttacks();
@@ -203,12 +203,13 @@ public class UI extends SceneModule<Duel>{
 		next.getContentTable().pad(50);
 		next.getContentTable().padBottom(20);
 		
-		next.getButtonTable().addButton("Next Battle", ()->{
+		next.getButtonTable().addButton("Go", ()->{
 			
 			next.hide();
 			restart();
 			
 			won = false;
+			dead = false;
 		}).pad(5);
 		
 		next.setMovable(false);
@@ -242,12 +243,20 @@ public class UI extends SceneModule<Duel>{
 		restart.padTop(restart.getPadTop()-20);
 		restart.getContentTable().pad(50);
 		restart.getContentTable().row();
+		restart.getContentTable().addButton("Change Loadout", ()->{
+			next.getTitleLabel().setText("Loadout");
+			restart.hide();
+			next.show(scene);
+			dead = false;
+			won = true;
+		}).padTop(10f);
+		restart.getContentTable().row();
 		restart.getContentTable().addButton("back to Menu", ()->{
 			restart();
 			dead = false;
 			playing = false;
 			restart.hide();
-		}).padTop(10f);
+		});
 		
 		
 		SceneBuild.begin(scene);
@@ -368,20 +377,21 @@ public class UI extends SceneModule<Duel>{
 	
 	@Override
 	public void update(){
-		if(UInput.keyDown(Keys.R))
-			Duel.enemy.health = 0;
+		//if(UInput.keyDown(Keys.R))
+		//	Duel.enemy.health = 0;
 		
-		if(Duel.player().health() <= 0 && !dead){
+		if(Duel.player().health() <= 0 && !dead && !won){
 			restart.show(scene);
 			dead = true;
 		}
 		
-		if(dead && UInput.keyDown(Keys.SPACE)){
+		if(dead && UInput.keyDown(Keys.SPACE) && !won){
 			restart();
 		}
 		
 		if(Duel.enemy.health() <= 0 && !won){
 			nextBattle();
+			next.getTitleLabel().setText("Victory!");
 			next.show(scene);
 			Duel.enemy().remove();
 			won = true;
@@ -453,6 +463,7 @@ public class UI extends SceneModule<Duel>{
 			text.setText("[ORANGE]Attack: [GREEN]\"" + attack.name()  
 			+"\"\n[WHITE]" + attack.desc 
 			+ "\n[YELLOW]Drag to attack bar to assign.");
+			
 			
 			Draw.color(Color.ROYAL);
 			Draw.thickness(4);

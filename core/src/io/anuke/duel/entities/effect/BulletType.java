@@ -13,13 +13,13 @@ import io.anuke.ucore.util.Mathf;
 
 public enum BulletType{
 	test(1f, 5),
-	swarm(6f, 5){
+	swarm(6.5f, 5){
 		{lifetime = 300;}
 		void draw(){
 			super.draw();
 			
 			Entity target = b.target();
-			vector.set(target.x - b.x, target.y - b.y).setLength(0.3f);
+			vector.set(target.x - b.x, target.y - b.y).setLength(0.33f);
 			b.velocity.add(vector);
 			b.velocity.limit(speed);
 			
